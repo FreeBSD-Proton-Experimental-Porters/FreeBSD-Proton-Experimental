@@ -3,7 +3,7 @@
 ### What is this?
 > This repo is simply wine-proton but bumped to the experimental version.
 
-> This also includes the https://gitlab.winehq.org/wine/wine/-/merge_requests/5213/diffs patch, which fixes Unreal Engine games and some Unity ones too.
+> This also includes the [https://gitlab.winehq.org/wine/wine/-/merge_requests/5213/diffs](https://gitlab.winehq.org/wine/wine/-/merge_requests/7339/diffs) patch, which fixes Unreal Engine games and some Unity ones too.
 
 ## How to use?
 > Feel free to use the pre-built packages, available in the releases tab. Security-conscious users may want to build it themselves, so here are some instructions for that:
@@ -73,7 +73,7 @@ but replace ```amd64``` with ```14-stable-amd64``` for FreeBSD 14-STABLE or ```m
 
 Once it finishes building (hopefully,) then run 
 ```
-pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20250612.pkg
+pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20250630.pkg
 ``` 
 If that works, congratulations. 
 
@@ -117,7 +117,7 @@ but replace ```i386``` with ```14-stable-i386``` for FreeBSD 14-STABLE or ```mai
 
 After that, run: 
 ```
-/usr/local/wine-proton/bin/pkg32.sh install -y /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20250612.pkg
+/usr/local/wine-proton/bin/pkg32.sh install -y /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20250630.pkg
 ``` 
 and you should be all good
 

@@ -3,7 +3,7 @@
 ### What is this?
 > This repo is simply wine-proton but bumped to the experimental version.
 
-> This also includes the [https://gitlab.winehq.org/wine/wine/-/merge_requests/5213/diffs](https://gitlab.winehq.org/wine/wine/-/merge_requests/7339/diffs) patch, which fixes Unreal Engine games and some Unity ones too.
+> This also includes the https://gitlab.winehq.org/wine/wine/-/merge_requests/7339/diffs patch, which fixes Unreal Engine games and some Unity ones too.
 
 ## How to use?
 > Feel free to use the pre-built packages, available in the releases tab. Security-conscious users may want to build it themselves, so here are some instructions for that:

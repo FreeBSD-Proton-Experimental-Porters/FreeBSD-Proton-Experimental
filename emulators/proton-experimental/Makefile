@@ -1,6 +1,5 @@
-PORTNAME=	wine-proton
-DISTVERSION=	experimental-10.0-20250630
-PORTREVISION=	0
+PORTNAME=	wine-proton-experimental
+DISTVERSION=	10.0-20250630
 CATEGORIES=	emulators
 
 MAINTAINER=	tmp386@live.com
@@ -54,6 +53,8 @@ NO_SHLIB_REQUIRES_GLOB= * # some of us never wanted that functionality in the fi
 
 SHEBANG_FILES=	tools/make_requests tools/winemaker/winemaker \
 		tools/winedump/function_grep.pl
+
+CONFLICTS_INSTALL=	wine-proton
 
 GNU_CONFIGURE=		yes
 GNU_CONFIGURE_PREFIX=	${PREFIX}/${PORTNAME}

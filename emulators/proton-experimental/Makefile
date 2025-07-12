@@ -64,7 +64,7 @@ CONFIGURE_ARGS=	--verbose \
 		--libdir=${PREFIX}/${PORTNAME}/lib \
 		--disable-kerberos \
 		--disable-tests \
-                --with-expat \
+		--with-expat \
 		--with-fontconfig \
 		--with-freetype \
 		--with-gnutls \

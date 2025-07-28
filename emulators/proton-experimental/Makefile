@@ -1,9 +1,10 @@
-PORTNAME=	wine-proton-experimental
-DISTVERSION=	10.0-20250711
+PORTNAME=	wine-proton
+DISTVERSION=	experimental-10.0-20250724
+PORTEPOCH=	1
 CATEGORIES=	emulators
 
 MAINTAINER=	tmp386@live.com
-COMMENT=	Proton experimental port for FreeBSD with a cool patch.
+COMMENT=	Proton experimental port for FreeBSD with a cool patch
 WWW=		https://github.com/ValveSoftware/wine
 
 LICENSE=	LGPL21 LGPL3
@@ -32,7 +33,7 @@ LIB_DEPENDS+=	libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxkbregistry.so:x11/libxkbcommon
 
-RUN_DEPENDS+=	ffmpeg4>=0:multimedia/ffmpeg4 # we are avoiding LIB_DEPENDS because find-lib.sh brings ffmpeg 6, which is ridiculous
+RUN_DEPENDS+=	ffmpeg4>=0:multimedia/ffmpeg4 # we are avoiding LIB_DEPENDS because find-lib.sh brings ffmpeg 6
 
 USES=		autoreconf bison desktop-file-utils gl gmake gnome gstreamer llvm:min=17,build,noexport localbase perl5 pkgconfig python:build sdl shebangfix tar:xz xorg
 USE_GCC=	yes

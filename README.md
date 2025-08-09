@@ -73,7 +73,7 @@ but replace ```amd64``` with ```14-stable-amd64``` for FreeBSD 14-STABLE or ```m
 
 Once it finishes building (hopefully,) then run 
 ```
-pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20250724,1.pkg
+pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20250805,1.pkg
 ``` 
 If that works, congratulations. 
 
@@ -117,7 +117,7 @@ but replace ```i386``` with ```14-stable-i386``` for FreeBSD 14-STABLE or ```mai
 
 After that, run: 
 ```
-/usr/local/wine-proton/bin/pkg32.sh install -y /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20250724,1.pkg
+/usr/local/wine-proton/bin/pkg32.sh install -y /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20250805,1.pkg
 ``` 
 and you should be all good
 

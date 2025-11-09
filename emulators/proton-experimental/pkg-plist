@@ -1322,7 +1322,6 @@ wine-proton/lib/wine/i386-windows/adsldpc.dll
 wine-proton/lib/wine/i386-windows/advapi32.dll
 wine-proton/lib/wine/i386-windows/advpack.dll
 wine-proton/lib/wine/i386-windows/amd_ags_x64.dll
-wine-proton/lib/wine/i386-windows/amdxc64.dll
 wine-proton/lib/wine/i386-windows/amsi.dll
 wine-proton/lib/wine/i386-windows/amstream.dll
 wine-proton/lib/wine/i386-windows/apisetschema.dll
@@ -1611,7 +1610,6 @@ wine-proton/lib/wine/i386-windows/libadsiid.a
 wine-proton/lib/wine/i386-windows/libadvapi32.a
 wine-proton/lib/wine/i386-windows/libadvpack.a
 wine-proton/lib/wine/i386-windows/libamd_ags_x64.a
-wine-proton/lib/wine/i386-windows/libamdxc64.a
 wine-proton/lib/wine/i386-windows/libatl.a
 wine-proton/lib/wine/i386-windows/libatl100.a
 wine-proton/lib/wine/i386-windows/libatl110.a

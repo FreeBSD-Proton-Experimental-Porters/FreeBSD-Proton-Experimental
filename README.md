@@ -57,7 +57,7 @@ for FreeBSD 15-CURRENT.
 
 Now, let's clone this repo, cd into it, and the emulators/ folder.
 ```
-git clone https://github.com/es-j3/FreeBSD-Proton-Experimental.git && cd FreeBSD-Proton-Experimental/emulators
+git clone https://github.com/es-j3/FreeBSD-Proton-Experimental.git -b 9.0 && cd FreeBSD-Proton-Experimental/emulators
 ``` 
 
 Copy the folder to the poudriere ports tree 

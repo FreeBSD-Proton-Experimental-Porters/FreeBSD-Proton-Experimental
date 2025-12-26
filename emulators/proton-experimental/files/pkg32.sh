@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-SCRIPT_DIR=$(dirname $(realpath "$0"))
-
 if [ "$(id -u)" = 0 ]; then
   echo "Don't run this script as root!"
   exit 1
@@ -20,12 +18,27 @@ if [ ! -d "$I386_ROOT/usr/share/keys/pkg" ]; then
   ln -s /usr/share/keys/pkg "$I386_ROOT/usr/share/keys/pkg"
 fi
 
-if  [ "$(uname -U)" -ge 1500000 ]; then
-  export OSVERSION=1403000
-  # Show what we're going to do, then do it.
-  echo pkg -R $SCRIPT_DIR -o ABI=FreeBSD:14:i386 -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@"
-  exec pkg -R $SCRIPT_DIR -o ABI=FreeBSD:14:i386 -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@"
+run_pkg32()
+{
+    # Show what we're going to do, then do it.
+    echo pkg -o ABI_FILE=$ABI_FILE -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@";
+    pkg -o ABI_FILE=$ABI_FILE -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@";
+}
+
+run_pkg32_old()
+{
+    shift
+
+    # Show what we're going to do, then do it.
+    echo pkg -o ABI="FreeBSD:14:i386" -o OSVERSION=1403000 -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@";
+    pkg -o ABI="FreeBSD:14:i386" -o OSVERSION=1403000 -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@";
+}
+
+if [ $# -gt 0 ]; then
+    case $1 in
+    --old) run_pkg32_old "$@" ;;
+    *) run_pkg32 "$@" ;;
+    esac
 else
-  echo pkg -o ABI_FILE=$ABI_FILE -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@"
-  exec pkg -o ABI_FILE=$ABI_FILE -o INSTALL_AS_USER=true -o RUN_SCRIPTS=false --rootdir "$I386_ROOT" "$@"
+    run_pkg32 "$@"
 fi

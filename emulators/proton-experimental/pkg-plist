@@ -12,7 +12,6 @@
 %%WINE64%%wine-proton/bin-wow64/wine
 %%WINE64%%wine-proton/bin-wow64/wineserver
 %%WINE64%%wine-proton/bin/pkg32.sh
-%%WINE64%%wine-proton/bin/FreeBSD-14-i386.conf
 %%WINE64%%wine-proton/bin/wine64
 %%WINE64%%wine-proton/bin/wine64.bin
 %%WINE64%%wine-proton/bin/wineserver

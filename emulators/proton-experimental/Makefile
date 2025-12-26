@@ -1,5 +1,5 @@
 PORTNAME=	wine-proton
-DISTVERSION=	experimental-10.0-20251208
+DISTVERSION=	experimental-10.0-20251222
 PORTEPOCH=	1
 CATEGORIES=	emulators
 
@@ -41,7 +41,7 @@ USE_GCC=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ValveSoftware
 GH_PROJECT=	wine
-GH_TAGNAME=	a582823bba7a7610a1bbb9bd467c8311f1cf087b
+GH_TAGNAME=	3cd5fd2799a9a78199a16b795568eed488f5f533
 
 USE_GL=		gl
 USE_GNOME=	glib20
@@ -149,7 +149,6 @@ post-install:
 	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh                 ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine
 .else
 	${INSTALL_SCRIPT} ${FILESDIR}/pkg32.sh                ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/pkg32.sh
-	${INSTALL_SCRIPT} ${FILESDIR}/FreeBSD-14-i386.conf    ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/FreeBSD-14-i386.conf
 	${MV} ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine       ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine64.bin
 	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh                 ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine64
 	${INSTALL_SCRIPT} ${FILESDIR}/wine-wow64.sh           ${STAGEDIR}${PREFIX}/${PORTNAME}/bin/wine

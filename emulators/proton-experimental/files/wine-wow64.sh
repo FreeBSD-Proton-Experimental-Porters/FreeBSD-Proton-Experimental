@@ -2,7 +2,7 @@
 
 TARGET="$(realpath "$0")"
 PREFIX="${TARGET%/*/*}"
-LOCALBASE="${PREFIX}"
+LOCALBASE="${PREFIX%/*}"
 
 I386_ROOT="${WINE_i386_ROOT:-$HOME/.i386-wine-pkg}"
 
@@ -25,7 +25,6 @@ then
 	  FreeBSD:$FREEBSD_VERSION_MAJOR:i386
 	to the relevant output directories. See pkg.conf(5) for more info.
 HERE
-
   exit 1
 fi
 
@@ -37,8 +36,7 @@ WINE64_VERSION=$(env -u WINELOADERNOEXEC "${TARGET}64" --version)
 if [ "$WINE32_VERSION" != "$WINE64_VERSION" ]
 then
   printf "wine [%s] and wine64 [%s] versions do not match!\n\n" "$WINE32_VERSION" "$WINE64_VERSION"
-  printf "Try updating 32-bit wine with\n\t%s\n" "$PREFIX/share/wine/pkg32.sh upgrade"
-  printf "If you are on 15.0, then you can use the old repository\n\t%s\n" "$PREFIX/share/wine/pkg32.sh --old upgrade -r FreeBSD-ports"
+  printf "Try updating 32-bit wine with\n\t%s\n" "$PREFIX/bin/pkg32.sh upgrade"
   exit 1
 fi
 
@@ -57,12 +55,12 @@ export LD_32_LIBMAP="
 libgcc_s.so.1 /usr/lib32/libgcc_s.so.1
 $LOCALBASE/lib/libvulkan_intel.so  $I386_ROOT/$LOCALBASE/lib/libvulkan_intel.so
 $LOCALBASE/lib/libvulkan_radeon.so $I386_ROOT/$LOCALBASE/lib/libvulkan_radeon.so
-$LOCALBASE/lib/alsa-lib/libasound_module_pcm_oss.so $I386_ROOT/$LOCALBASE/lib/alsa-lib/libasound_module_pcm_oss.so
 $LD_32_LIBMAP_CONF
 $LD_32_LIBMAP"
 
 if [ -z "$WINE_NO_WOW64" ]
 then
+  export PATH="${TARGET%/*}:${PATH}"
   export WINESERVER="${TARGET}server"
 fi
 

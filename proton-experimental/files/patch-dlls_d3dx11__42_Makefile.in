@@ -1,0 +1,11 @@
+--- dlls/d3dx11_42/Makefile.in.orig	2025-02-12 15:34:54.000000000 -0800
++++ dlls/d3dx11_42/Makefile.in	2025-03-04 16:09:37.045469000 -0800
+@@ -1,7 +1,7 @@
+ EXTRADEFS = -DD3DX11_SDK_VERSION=42
+ MODULE    = d3dx11_42.dll
+ IMPORTLIB = d3dx11_42
+-IMPORTS = d3dcompiler d3dx11_43
++IMPORTS = d3dcompiler d3dx11
+ 
+ EXTRADLLFLAGS = -Wb,--prefer-native
+ 

@@ -9,7 +9,12 @@ I386_ROOT="${WINE_i386_ROOT:-$HOME/.i386-wine-pkg}"
 if [ ! -f "$I386_ROOT/$PREFIX/bin/wine" ]
 then
   printf "%s doesn't exist!\n\n" "$I386_ROOT/$PREFIX/bin/wine"
-  printf "Try installing 32-bit Wine with\n\t%s\n" "$PREFIX/bin/pkg32.sh install wine-proton mesa-dri"
+  printf "Try installing 32-bit Wine with\n\t%s\n" "$PREFIX/share/wine/pkg32.sh install wine-devel mesa-dri"
+
+  printf "In the case of FreeBSD 15.0, use wine64.bin if 32bit is not needed\n"
+  printf "If 32bit is needed, then either use the repository from 14.3 with this command:\n\t%s\n" "$PREFIX/share/wine/pkg32.sh --old install -r FreeBSD-ports wine-devel mesa-dri"
+  printf "Or use Poudriere\n"
+
   ABI=$(pkg config ABI | sed s/amd64/i386/)
   FREEBSD_VERSION_MAJOR=`uname -r | sed "s/\..*//"`
   cat <<- HERE
@@ -23,6 +28,9 @@ HERE
   exit 1
 fi
 
+# Export early so that external libs could be found
+export LD_32_LIBRARY_PATH="${LD_32_LIBRARY_PATH:+$LD_32_LIBRARY_PATH:}$I386_ROOT/$LOCALBASE/lib"
+
 WINE32_VERSION=$(env -u WINELOADERNOEXEC "$I386_ROOT/$PREFIX/bin/wine" --version)
 WINE64_VERSION=$(env -u WINELOADERNOEXEC "${TARGET}64" --version)
 if [ "$WINE32_VERSION" != "$WINE64_VERSION" ]
@@ -33,7 +41,7 @@ then
 fi
 
 export LIBGL_DRIVERS_PATH="${LIBGL_DRIVERS_PATH:+$LIBGL_DRIVERS_PATH:}$LOCALBASE/lib/dri-devel:$LOCALBASE/lib32/dri-devel:$I386_ROOT/$LOCALBASE/lib/dri-devel:$LOCALBASE/lib/dri:$LOCALBASE/lib32/dri:$I386_ROOT/$LOCALBASE/lib/dri"
-export LD_32_LIBRARY_PATH="${LD_32_LIBRARY_PATH:+$LD_32_LIBRARY_PATH:}$I386_ROOT/$PREFIX/lib/wine:$LOCALBASE/lib32:$I386_ROOT/$LOCALBASE/lib"
+export LD_32_LIBRARY_PATH="${LD_32_LIBRARY_PATH:+$LD_32_LIBRARY_PATH:}$I386_ROOT/$PREFIX/lib/wine:$LOCALBASE/lib32:$I386_ROOT/$LOCALBASE/lib:$I386_ROOT/$LOCALBASE/lib/pulseaudio"
 for d in "$I386_ROOT/$LOCALBASE"/llvm*/lib
 do
   if [ -d "$d" ]

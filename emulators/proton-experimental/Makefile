@@ -1,9 +1,10 @@
-PORTNAME=	wine-proton
+PORTNAME=	wine-proton-9
 DISTVERSION=	experimental-9.0-20250402
-PORTREVISION=	0
+PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	emulators
 
-MAINTAINER=	alexander.nogal@proton.me
+MAINTAINER=	alexander.nogal@proton.me # and tmp386@live.com
 COMMENT=	Proton experimental port for FreeBSD with a cool patch
 WWW=		https://github.com/ValveSoftware/wine
 

@@ -139,13 +139,13 @@ poudriere overlay -c -n proton-experimental-overlay -m null -p ~/Proton-Experime
 ```
 poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
   -b latest emulators/proton-experimental \
-  -O pproton-experimental-overlay
+  -O proton-experimental-overlay
 ```
 
 or (pkgbase):
 ```
 poudriere bulk -j ${FREEBSD_JAIL_AMD64_PKGB} \
-  -O pproton-experimental-overlay \
+  -O proton-experimental-overlay \
   -b latest emulators/proton-experimental \
   -m pkgbase=base_latest \
   -U https://pkg.freebsd.org/
@@ -199,14 +199,14 @@ poudriere jail -u -j ${FREEBSD_JAIL_I386_PKGB}
 ```
 poudriere bulk -j ${FREEBSD_JAIL_I386} \
   -b latest emulators/proton-experimental \
-  -O pproton-experimental-overlay
+  -O proton-experimental-overlay
 ```
 
 or (pkgbase):
 ```
 poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
   -b latest emulators/proton-experimental \
-  -O pproton-experimental-overlay
+  -O proton-experimental-overlay
 ```
 
 ---

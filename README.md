@@ -124,15 +124,12 @@ poudriere jail -u -j ${FREEBSD_JAIL_AMD64_PKGB}
 
 ---
 
-## Clone this repo and copy the port
+## Clone this repo and poudriere overlay the port
 
 ```
+cd ~
 git clone https://github.com/es-j3/FreeBSD-Proton-Experimental.git
-cd FreeBSD-Proton-Experimental/emulators
-```
-
-```
-cp -r proton-experimental /usr/local/poudriere/ports/default/emulators/proton-experimental
+poudriere overlay -c -n proton-experimental-overlay -m null -p ~/Proton-Experimental/FreeBSD-Proton-Experimental
 ```
 
 ---
@@ -140,12 +137,15 @@ cp -r proton-experimental /usr/local/poudriere/ports/default/emulators/proton-ex
 ## Build the amd64 package
 
 ```
-poudriere bulk -j ${FREEBSD_JAIL_AMD64} -b latest emulators/proton-experimental
+poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
+  -b latest emulators/proton-experimental \
+  -O pproton-experimental-overlay
 ```
 
 or (pkgbase):
 ```
 poudriere bulk -j ${FREEBSD_JAIL_AMD64_PKGB} \
+  -O pproton-experimental-overlay \
   -b latest emulators/proton-experimental \
   -m pkgbase=base_latest \
   -U https://pkg.freebsd.org/
@@ -197,12 +197,16 @@ poudriere jail -u -j ${FREEBSD_JAIL_I386_PKGB}
 ## Build the i386 package
 
 ```
-poudriere bulk -j ${FREEBSD_JAIL_I386} -b latest emulators/proton-experimental
+poudriere bulk -j ${FREEBSD_JAIL_I386} \
+  -b latest emulators/proton-experimental \
+  -O pproton-experimental-overlay
 ```
 
 or (pkgbase):
 ```
-poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} -b latest emulators/proton-experimental
+poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
+  -b latest emulators/proton-experimental \
+  -O pproton-experimental-overlay
 ```
 
 ---

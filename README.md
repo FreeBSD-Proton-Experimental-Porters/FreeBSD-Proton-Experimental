@@ -146,7 +146,10 @@ poudriere bulk -j ${FREEBSD_JAIL_AMD64} -b latest emulators/proton-experimental
 
 or (pkgbase):
 ```
-poudriere bulk -j ${FREEBSD_JAIL_AMD64_PKGB} -b latest emulators/proton-experimental -m pkgbase=base_latest -U https://pkg.freebsd.org/
+poudriere bulk -j ${FREEBSD_JAIL_AMD64_PKGB} \
+  -b latest emulators/proton-experimental \
+  -m pkgbase=base_latest \
+  -U https://pkg.freebsd.org/
 ```
 
 Install it:

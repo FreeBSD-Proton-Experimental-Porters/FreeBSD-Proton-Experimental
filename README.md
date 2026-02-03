@@ -145,8 +145,8 @@ poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
 or (pkgbase):
 ```
 poudriere bulk -j ${FREEBSD_JAIL_AMD64_PKGB} \
-  -O proton-experimental-overlay \
   -b latest emulators/proton-experimental \
+  -O proton-experimental-overlay \
   -m pkgbase=base_latest \
   -U https://pkg.freebsd.org/
 ```

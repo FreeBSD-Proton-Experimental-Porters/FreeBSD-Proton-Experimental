@@ -167,7 +167,7 @@ pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-
 ### Create i386 jail (classic, FreeBSD 14.x only)
 
 ```
-poudriere jail -c -j ${FREEBSD_JAIL_I386} -v ${FREEBSD_VERSION}  -a i386
+poudriere jail -c -j ${FREEBSD_JAIL_I386} -v ${FREEBSD_VERSION} -a i386
 ```
 
 ---

@@ -24,7 +24,6 @@ export FREEBSD_JAIL_AMD64="amd64"
 # i386 jail name
 export FREEBSD_JAIL_I386="i386"
 
-
 #export FREEBSD_JAIL_AMD64_PKGB="14-stable-amd64"
 #export FREEBSD_JAIL_I386_PKGB="14-stable-i386"
 

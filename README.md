@@ -224,6 +224,15 @@ poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
 mkdir -p ~/poudriere-repos
 ln -s /usr/local/poudriere/data/packages/${FREEBSD_JAIL_AMD64}/.latest ~/poudriere-repos/FreeBSD:15:amd64
 ln -s /usr/local/poudriere/data/packages/${FREEBSD_JAIL_I386_PKGB}/.latest ~/poudriere-repos/FreeBSD:15:i386
+
+cat > /usr/local/etc/pkg/repos/poudriere-wine-proton.conf << 'EOF'
+poudriere-wine-proton: {
+    url: "file://$HOME/poudriere-repos/${ABI}",
+    enabled: yes,
+    priority: 20
+}
+EOF
+
 pkg install wine-proton
 /usr/local/wine-proton/bin/pkg32.sh install wine-proton
 ```

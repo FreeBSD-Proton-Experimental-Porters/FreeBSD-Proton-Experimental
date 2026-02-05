@@ -109,7 +109,7 @@ poudriere jail -l
 
 Delete a jail:
 ```
-poudriere -d ${FREEBSD_JAIL_AMD64}
+poudriere -d -j ${FREEBSD_JAIL_AMD64}
 ```
 
 Update an existing jail:

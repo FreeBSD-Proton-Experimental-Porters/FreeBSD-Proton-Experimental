@@ -215,6 +215,7 @@ poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
 
 ```
 /usr/local/wine-proton/bin/pkg32.sh install -y \
+  -r FreeBSD-ports \
   /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20260127,1.pkg
 ```
 

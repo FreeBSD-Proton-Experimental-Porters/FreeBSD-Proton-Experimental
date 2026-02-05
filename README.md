@@ -143,7 +143,7 @@ cp -r /root/FreeBSD-Proton-Experimental/emulators/proton-experimental /usr/local
 ## Build the amd64 package
 
 ```
-poudriere bulk -j ${FEEBSD_JAIL_AMD64} \
+poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
   -b latest emulators/proton-experimental
 ```
 

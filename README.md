@@ -134,8 +134,8 @@ poudriere jail -u -j ${FREEBSD_JAIL_AMD64_PKGB}
 
 ```
 cd ~
-git clone https://github.com/es-j3/FreeBSD-Proton-Experimental.git
-poudriere ports -c -p FreeBSDProtonExperimental -m git -U ~/FreeBSD-Proton-Experimental
+git clone https://github.com/es-j3/FreeBSD-Proton-Experimental.git && cd FreeBSD-Proton-Experimental/emulators
+cp -r /root/FreeBSD-Proton-Experimental/emulators/proton-experimental /usr/local/poudriere/ports/default/emulators/
 ```
 
 ---

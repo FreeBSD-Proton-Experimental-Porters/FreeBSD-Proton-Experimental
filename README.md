@@ -19,7 +19,7 @@ Adjust these variables to match your system and FreeBSD version.
 export FREEBSD_VERSION="15.0-RELEASE"
 
 # amd64 jail name
-export FREEBSD_JAIL_AMD64="amd64"
+export FREEBSD_JAIL_AMD64=main-amd64
 
 # i386 jail name
 export FREEBSD_JAIL_I386="i386"

@@ -135,7 +135,7 @@ poudriere jail -u -j ${FREEBSD_JAIL_AMD64_PKGB}
 ```
 cd ~
 git clone https://github.com/es-j3/FreeBSD-Proton-Experimental.git
-poudriere overlay -c -n proton-experimental-overlay -m null -p ~/FreeBSD-Proton-Experimental
+poudriere ports -c -p FreeBSDProtonExperimental -m git -U ~/FreeBSD-Proton-Experimental
 ```
 
 ---

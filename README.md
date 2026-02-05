@@ -222,12 +222,12 @@ poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
 ## Using poudriere pkg.conf
 ```
 mkdir -p ~/poudriere-repos
-ln -s /usr/local/poudriere/data/packages/${FREEBSD_JAIL_AMD64}/.latest ~/poudriere-repos/FreeBSD:15:amd64
-ln -s /usr/local/poudriere/data/packages/${FREEBSD_JAIL_I386_PKGB}/.latest ~/poudriere-repos/FreeBSD:15:i386
+ln -s /usr/local/poudriere/data/packages/${FREEBSD_JAIL_AMD64}/.latest /usr/local/poudriere-repos/FreeBSD:15:amd64
+ln -s /usr/local/poudriere/data/packages/${FREEBSD_JAIL_I386_PKGB}/.latest /usr/local/poudriere-repos/FreeBSD:15:i386
 
 cat > /usr/local/etc/pkg/repos/poudriere-wine-proton.conf << 'EOF'
 poudriere-wine-proton: {
-    url: "file://$HOME/poudriere-repos/${ABI}",
+    url: "file:///usr/local/poudriere-repos/${ABI}",
     enabled: yes,
     priority: 20
 }

@@ -104,7 +104,7 @@ poudriere jail -c \
 
 List jails:
 ```
-poudriere -l
+poudriere jail -l
 ```
 
 Delete a jail:

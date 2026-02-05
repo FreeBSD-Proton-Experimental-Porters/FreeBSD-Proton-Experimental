@@ -75,6 +75,12 @@ ALLOW_MAKE_JOBS=YES
 poudriere ports -c
 ```
 
+## Update the poudriere ports tree
+
+```
+poudriere ports -u
+```
+
 ---
 
 ## Create an amd64 jail (classic method)

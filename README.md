@@ -147,15 +147,6 @@ poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
   -b latest emulators/proton-experimental
 ```
 
-or (pkgbase):
-```
-poudriere bulk -j ${FREEBSD_JAIL_AMD64_PKGB} \
-  -b latest emulators/proton-experimental \
-  -O proton-experimental-overlay \
-  -m pkgbase=base_latest \
-  -U https://pkg.freebsd.org/
-```
-
 Install it:
 ```
 pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20260127,1.pkg

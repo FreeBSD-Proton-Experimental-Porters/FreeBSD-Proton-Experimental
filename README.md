@@ -17,6 +17,8 @@ Adjust these variables to match your system and FreeBSD version.
 #   14.3-RELEASE (14-STABLE)
 #   15.0-RELEASE (15-CURRENT, pkgbase required for i386)
 export FREEBSD_VERSION="15.0-RELEASE"
+export FREEBSD_VERSION_I386="14.3-RELEASE"
+
 
 # amd64 jail name
 export FREEBSD_JAIL_AMD64=main-amd64
@@ -157,12 +159,12 @@ pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-
 ## 32-bit (i386) build
 
 > Required for Proton.  
-> Note: i386 packages are **removed in FreeBSD 15**, so pkgbase is required there.
+> Note: i386 packages are **removed in FreeBSD 15**, so building with FreeBSD 14.3 is recommended.
 
-### Create i386 jail (classic, FreeBSD 14.x only)
+### Create i386 jail
 
 ```
-poudriere jail -c -j ${FREEBSD_JAIL_I386} -v ${FREEBSD_VERSION} -a i386
+poudriere jail -c -j ${FREEBSD_JAIL_I386} -v ${FREEBSD_VERSION_I386} -a i386
 ```
 
 ---
@@ -194,15 +196,13 @@ poudriere jail -u -j ${FREEBSD_JAIL_I386_PKGB}
 
 ```
 poudriere bulk -j ${FREEBSD_JAIL_I386} \
-  -b latest emulators/proton-experimental \
-  -O proton-experimental-overlay
+  -b latest emulators/proton-experimental
 ```
 
 or (pkgbase):
 ```
 poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
-  -b latest emulators/proton-experimental \
-  -O proton-experimental-overlay
+  -b latest emulators/proton-experimental
 ```
 
 ---

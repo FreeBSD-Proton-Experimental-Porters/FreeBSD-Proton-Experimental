@@ -15,7 +15,7 @@ Adjust these variables to match your system and FreeBSD version.
 # FreeBSD version
 # Examples:
 #   14.3-RELEASE (14-STABLE)
-#   15.0-RELEASE (15-CURRENT, pkgbase required for i386)
+#   15.0-RELEASE (15-CURRENT, pkgbase or FreeBSD 14.3 required for i386)
 export FREEBSD_VERSION="15.0-RELEASE"
 export FREEBSD_VERSION_I386="14.3-RELEASE"
 

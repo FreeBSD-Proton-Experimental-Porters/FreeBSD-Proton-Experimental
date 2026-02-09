@@ -153,6 +153,7 @@ Install it:
 ```
 pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20260127,1.pkg
 ```
+If you want to install with poudriere pkg.conf check the bottom of this README.
 
 ---
 

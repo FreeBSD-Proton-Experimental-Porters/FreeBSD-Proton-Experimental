@@ -88,7 +88,10 @@ poudriere ports -u
 ## Create an amd64 jail (classic method)
 
 ```
-poudriere jail -c -j ${FREEBSD_JAIL_AMD64} -v ${FREEBSD_VERSION} -a amd64
+poudriere jail -c \
+  -j ${FREEBSD_JAIL_AMD64} \
+  -v ${FREEBSD_VERSION} \
+  -a amd64
 ```
 
 ---
@@ -165,7 +168,10 @@ If you want to install with poudriere pkg.conf check the bottom of this README.
 ### Create i386 jail
 
 ```
-poudriere jail -c -j ${FREEBSD_JAIL_I386} -v ${FREEBSD_VERSION_I386} -a i386
+poudriere jail -c \
+  -j ${FREEBSD_JAIL_I386} \
+  -v ${FREEBSD_VERSION_I386} \
+  -a i386
 ```
 
 ---

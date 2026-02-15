@@ -154,7 +154,7 @@ poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
 
 Install it:
 ```
-pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20260127,1.pkg
+pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20260210,1.pkg
 ```
 If you want to install with poudriere pkg.conf check the bottom of this README.
 
@@ -162,7 +162,7 @@ If you want to install with poudriere pkg.conf check the bottom of this README.
 
 ## 32-bit (i386) build
 
-> Required for Proton.  
+> Required for Proton.
 > Note: i386 packages are **removed in FreeBSD 15**, so building with FreeBSD 14.3 is recommended.
 
 ### Create i386 jail
@@ -219,7 +219,7 @@ poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
 ```
 /usr/local/wine-proton/bin/pkg32.sh install -y \
   -r FreeBSD-ports \
-  /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20260127,1.pkg
+  /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20260210,1.pkg
 ```
 
 ## Using poudriere pkg.conf

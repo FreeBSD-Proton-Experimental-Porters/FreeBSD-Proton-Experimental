@@ -27,7 +27,7 @@ poudriere ports -c
 
 Now, we a poudriere jail for FreeBSD 14.x-RELEASE: 
 ```
-poudriere jail -c -j amd64 -v 14.3-RELEASE -a amd64
+poudriere jail -c -j amd64 -v 14.4-RELEASE -a amd64
 ```
 You may change the RELEASE part to whatever your FreeBSD version is.
 
@@ -81,7 +81,7 @@ We're not done yet, because we still need to install the 32 bit version.
 
 Create a 32 bit poudriere jail for FreeBSD 14.x-RELEASE: 
 ```
-poudriere jail -c -j i386 -v 14.3-RELEASE -a i386
+poudriere jail -c -j i386 -v 14.4-RELEASE -a i386
 ``` 
 you may change the RELEASE part to whatever your FreeBSD version is
 

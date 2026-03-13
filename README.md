@@ -14,10 +14,10 @@ Adjust these variables to match your system and FreeBSD version.
 ```
 # FreeBSD version
 # Examples:
-#   14.3-RELEASE (14-STABLE)
-#   15.0-RELEASE (15-CURRENT, pkgbase or FreeBSD 14.3 required for i386)
+#   14.4-RELEASE
+#   15.0-RELEASE (15-CURRENT, pkgbase or FreeBSD 14.4 required for i386)
 export FREEBSD_VERSION="15.0-RELEASE"
-export FREEBSD_VERSION_I386="14.3-RELEASE"
+export FREEBSD_VERSION_I386="14.4-RELEASE"
 
 
 # amd64 jail name
@@ -163,7 +163,7 @@ If you want to install with poudriere pkg.conf check the bottom of this README.
 ## 32-bit (i386) build
 
 > Required for Proton.
-> Note: i386 packages are **removed in FreeBSD 15**, so building with FreeBSD 14.3 is recommended.
+> Note: i386 packages are **removed in FreeBSD 15**, so building with FreeBSD 14.4 is recommended.
 
 ### Create i386 jail
 

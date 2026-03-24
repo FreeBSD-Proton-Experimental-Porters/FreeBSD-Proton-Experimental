@@ -37,7 +37,7 @@ export FREEBSD_JAIL_I386_PKGB="main-i386"
 ---
 
 ## How to use?
-> Feel free to use the pre-built packages, available in the releases tab. Security-conscious users may want to build it themselves, so here are some instructions for that:
+> Here are some instructions for building:
 
 > Make sure you have git before continuing.
 

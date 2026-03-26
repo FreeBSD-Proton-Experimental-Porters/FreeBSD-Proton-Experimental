@@ -92,8 +92,8 @@ poudriere ports -u
 ```
 poudriere jail -c \
   -j ${FREEBSD_JAIL_AMD64} \
-  -v ${FREEBSD_VERSION} \
-  -a amd64
+  -a amd64 \
+  -v ${FREEBSD_VERSION}
 ```
 
 ---
@@ -105,10 +105,10 @@ Recommended for FreeBSD 15.x.
 ```
 poudriere jail -c \
   -j ${FREEBSD_JAIL_AMD64_PKGB} \
-  -v ${FREEBSD_VERSION} \
   -a amd64 \
   -m pkgbase=base_latest \
-  -U https://pkg.freebsd.org/
+  -U https://pkg.freebsd.org/ \
+  -v ${FREEBSD_VERSION}
 ```
 
 ---
@@ -172,8 +172,8 @@ If you want to install with poudriere pkg.conf check the bottom of this README.
 ```
 poudriere jail -c \
   -j ${FREEBSD_JAIL_I386} \
-  -v ${FREEBSD_VERSION_I386} \
-  -a i386
+  -a i386 \
+  -v ${FREEBSD_VERSION_I386}
 ```
 
 ---
@@ -183,10 +183,10 @@ poudriere jail -c \
 ```
 poudriere jail -c \
   -j ${FREEBSD_JAIL_I386_PKGB} \
-  -v ${FREEBSD_VERSION} \
   -a i386 \
   -m pkgbase=base_latest \
-  -U https://pkg.freebsd.org/
+  -U https://pkg.freebsd.org/ \
+  -v ${FREEBSD_VERSION}
 ```
 
 Update if needed:

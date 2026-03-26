@@ -4,7 +4,7 @@ PORTEPOCH=	1
 CATEGORIES=	emulators
 
 MAINTAINER=	tmp386@live.com
-COMMENT=	Proton experimental port for FreeBSD with a cool patch
+COMMENT=	Proton experimental port for FreeBSD
 WWW=		https://github.com/ValveSoftware/wine
 
 LICENSE=	LGPL21 LGPL3

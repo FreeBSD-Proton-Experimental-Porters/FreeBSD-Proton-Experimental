@@ -1,4 +1,6 @@
-### FreeBSD Proton Experimental
+# FreeBSD Proton Experimental
+
+**AI Disclosure:** _AI agents were used to assist with development._
 
 ### What is this?
 > This repo is simply wine-proton but bumped to the experimental version.

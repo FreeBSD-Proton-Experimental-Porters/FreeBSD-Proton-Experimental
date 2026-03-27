@@ -12,7 +12,7 @@ then
   printf "Try installing 32-bit Wine with\n\t%s\n" "$PREFIX/share/wine/pkg32.sh install wine-devel mesa-dri"
 
   printf "In the case of FreeBSD 15.0, use wine64.bin if 32bit is not needed\n"
-  printf "If 32bit is needed, then either use the repository from 14.3 with this command:\n\t%s\n" "$PREFIX/share/wine/pkg32.sh --old install -r FreeBSD-ports wine-devel mesa-dri"
+  printf "If 32bit is needed, then either use the repository from 14.x with this command:\n\t%s\n" "$PREFIX/share/wine/pkg32.sh --old install -r FreeBSD-ports wine-devel mesa-dri"
   printf "Or use Poudriere\n"
 
   ABI=$(pkg config ABI | sed s/amd64/i386/)

@@ -156,7 +156,7 @@ poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
 
 Install it:
 ```
-pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20260324,1.pkg
+pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-e.10.0.20260407,1.pkg
 ```
 If you want to install with poudriere pkg.conf check the bottom of this README.
 
@@ -221,7 +221,7 @@ poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
 ```
 /usr/local/wine-proton/bin/pkg32.sh install -y \
   -r FreeBSD-ports \
-  /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20260324,1.pkg
+  /usr/local/poudriere/data/packages/i386-default/All/wine-proton-e.10.0.20260407,1.pkg
 ```
 
 ## Using poudriere pkg.conf

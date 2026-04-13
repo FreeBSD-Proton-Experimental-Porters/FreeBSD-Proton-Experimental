@@ -1329,7 +1329,6 @@ wine-proton/lib/wine/i386-windows/apphelp.dll
 wine-proton/lib/wine/i386-windows/appwiz.cpl
 wine-proton/lib/wine/i386-windows/appxdeploymentclient.dll
 wine-proton/lib/wine/i386-windows/arp.exe
-wine-proton/lib/wine/i386-windows/aspnet_regiis.exe
 wine-proton/lib/wine/i386-windows/atiadlxx.dll
 wine-proton/lib/wine/i386-windows/atl.dll
 wine-proton/lib/wine/i386-windows/atl100.dll
@@ -1469,7 +1468,6 @@ wine-proton/lib/wine/i386-windows/devenum.dll
 wine-proton/lib/wine/i386-windows/dhcpcsvc.dll
 wine-proton/lib/wine/i386-windows/dhcpcsvc6.dll
 wine-proton/lib/wine/i386-windows/dhtmled.ocx
-wine-proton/lib/wine/i386-windows/diasymreader.dll
 wine-proton/lib/wine/i386-windows/difxapi.dll
 wine-proton/lib/wine/i386-windows/dinput.dll
 wine-proton/lib/wine/i386-windows/dinput8.dll
@@ -1535,7 +1533,6 @@ wine-proton/lib/wine/i386-windows/fltmgr.sys
 wine-proton/lib/wine/i386-windows/fntcache.dll
 wine-proton/lib/wine/i386-windows/fontsub.dll
 wine-proton/lib/wine/i386-windows/fsutil.exe
-wine-proton/lib/wine/i386-windows/fusion.dll
 wine-proton/lib/wine/i386-windows/fwpuclnt.dll
 wine-proton/lib/wine/i386-windows/gameinput.dll
 wine-proton/lib/wine/i386-windows/gameux.dll
@@ -1610,7 +1607,6 @@ wine-proton/lib/wine/i386-windows/libadsiid.a
 wine-proton/lib/wine/i386-windows/libadvapi32.a
 wine-proton/lib/wine/i386-windows/libadvpack.a
 wine-proton/lib/wine/i386-windows/libamd_ags_x64.a
-wine-proton/lib/wine/i386-windows/libamdxc64.a
 wine-proton/lib/wine/i386-windows/libatl.a
 wine-proton/lib/wine/i386-windows/libatl100.a
 wine-proton/lib/wine/i386-windows/libatl110.a
@@ -1902,7 +1898,6 @@ wine-proton/lib/wine/i386-windows/msauddecmft.dll
 wine-proton/lib/wine/i386-windows/mscat32.dll
 wine-proton/lib/wine/i386-windows/mscms.dll
 wine-proton/lib/wine/i386-windows/mscoree.dll
-wine-proton/lib/wine/i386-windows/mscorwks.dll
 wine-proton/lib/wine/i386-windows/msctf.dll
 wine-proton/lib/wine/i386-windows/msctfmonitor.dll
 wine-proton/lib/wine/i386-windows/msctfp.dll
@@ -1993,7 +1988,6 @@ wine-proton/lib/wine/i386-windows/netsh.exe
 wine-proton/lib/wine/i386-windows/netstat.exe
 wine-proton/lib/wine/i386-windows/netutils.dll
 wine-proton/lib/wine/i386-windows/newdev.dll
-wine-proton/lib/wine/i386-windows/ngen.exe
 wine-proton/lib/wine/i386-windows/ninput.dll
 wine-proton/lib/wine/i386-windows/normaliz.dll
 wine-proton/lib/wine/i386-windows/notepad.exe
@@ -2041,7 +2035,6 @@ wine-proton/lib/wine/i386-windows/plugplay.exe
 wine-proton/lib/wine/i386-windows/pnputil.exe
 wine-proton/lib/wine/i386-windows/powershell.exe
 wine-proton/lib/wine/i386-windows/powrprof.dll
-wine-proton/lib/wine/i386-windows/presentationfontcache.exe
 wine-proton/lib/wine/i386-windows/printui.dll
 wine-proton/lib/wine/i386-windows/prntvpt.dll
 wine-proton/lib/wine/i386-windows/profapi.dll
@@ -2064,10 +2057,8 @@ wine-proton/lib/wine/i386-windows/rasapi32.dll
 wine-proton/lib/wine/i386-windows/rasdlg.dll
 wine-proton/lib/wine/i386-windows/reg.exe
 wine-proton/lib/wine/i386-windows/regapi.dll
-wine-proton/lib/wine/i386-windows/regasm.exe
 wine-proton/lib/wine/i386-windows/regedit.exe
 wine-proton/lib/wine/i386-windows/regini.exe
-wine-proton/lib/wine/i386-windows/regsvcs.exe
 wine-proton/lib/wine/i386-windows/regsvr32.exe
 wine-proton/lib/wine/i386-windows/resampledmo.dll
 wine-proton/lib/wine/i386-windows/resutils.dll
@@ -2104,7 +2095,6 @@ wine-proton/lib/wine/i386-windows/secur32.dll
 wine-proton/lib/wine/i386-windows/security.dll
 wine-proton/lib/wine/i386-windows/sensapi.dll
 wine-proton/lib/wine/i386-windows/serialui.dll
-wine-proton/lib/wine/i386-windows/servicemodelreg.exe
 wine-proton/lib/wine/i386-windows/services.exe
 wine-proton/lib/wine/i386-windows/setupapi.dll
 wine-proton/lib/wine/i386-windows/setupx.dll16

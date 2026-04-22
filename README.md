@@ -3,4 +3,4 @@
 **AI Disclosure:** _AI agents were used to assist with development._
 
 ### What is this?
-> This repo is simply wine-proton 11.
+> This repo contains wine-proton 11.

@@ -14,7 +14,7 @@
 %%WINE32%%wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwow32.a
 %%WINE64%%wine-proton-11/lib/wine/%%WINEARCH%%-unix/wine64
 %%WINE64%%wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwow64.a
-%%WINE32%%wine-proton-11/lib/wine/x86_64-windows/wow32.dll
+%%WINE32%%wine-proton-11/lib/wine/%%WINEARCH%%-windows/wow32.dll
 wine-proton-11/bin/function_grep.pl
 wine-proton-11/bin/msidb
 wine-proton-11/bin/msiexec

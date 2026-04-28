@@ -1,20 +1,20 @@
 PORTNAME=	wine-proton-11
-DISTVERSION=	11.0-beta1
+DISTVERSION=	11.0-beta2
 CATEGORIES=	emulators
 
 MAINTAINER=	tmp386@live.com
-COMMENT=	Proton 11.0 port for FreeBSD
+COMMENT=	Proton Experimental 11.0 port for FreeBSD
 WWW=		https://github.com/ValveSoftware/wine
 
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 i386
-
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		${LOCALBASE}/ffmpeg4/include/libavformat/avformat.h:multimedia/ffmpeg4 \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+
+USES=		autoreconf bison desktop-file-utils gl gmake gnome gstreamer llvm:min=17,build,noexport localbase perl5 pkgconfig python:build sdl shebangfix tar:xz xorg
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
@@ -32,15 +32,16 @@ LIB_DEPENDS+=	libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxkbregistry.so:x11/libxkbcommon
 
+ONLY_FOR_ARCHS=	amd64 i386
+
 RUN_DEPENDS+=	ffmpeg4>=0:multimedia/ffmpeg4 # we are avoiding LIB_DEPENDS because find-lib.sh brings ffmpeg 6
 
-USES=		autoreconf bison desktop-file-utils gl gmake gnome gstreamer llvm:min=17,build,noexport localbase perl5 pkgconfig python:build sdl shebangfix tar:xz xorg
 USE_GCC=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ValveSoftware
 GH_PROJECT=	wine
-GH_TAGNAME=	proton-wine-11.0-1-beta1
+GH_TAGNAME=	proton-wine-11.0-1-beta2
 
 USE_GL=		gl
 USE_GNOME=	glib20
@@ -101,7 +102,7 @@ CONFIGURE_ARGS=	--verbose \
 		--without-usb \
 		--without-v4l2
 
-CONFIGURE_ENV=	CPPBIN="false" CPPFLAGS="" FLEX="${LOCALBASE}/bin/flex" JXRLIB_CFLAGS="-I${LOCALBASE}/include/jxrlib" \
+CONFIGURE_ENV=	CPPBIN="false" CPPFLAGS+="" FLEX="${LOCALBASE}/bin/flex" JXRLIB_CFLAGS="-I${LOCALBASE}/include/jxrlib" \
 		PKG_CONFIG_PATH="${LOCALBASE}/ffmpeg4/libdata/pkgconfig"
 
 CFLAGS+=	-D__NR_futex="-1" -Werror=implicit-function-declaration -Wno-int-conversion

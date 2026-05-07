@@ -152,7 +152,7 @@ def set_up()
 
           raise if !str.gsub!('self.env["WINELOADERNOEXEC"] = "1"',           '')
 
-          raise if !str.gsub!('argv = [g_proton.lib_dir + "/wine/x86_64-unix/wine-preloader", g_proton.lib_dir + "/wine/x86_64-unix/wine", "c:\\\\windows\\\\system32\\\\steam.exe"]', 'argv = [g_proton.lib_dir + "/wine/x86_64-unix/wine", "c:\\\\windows\\\\system32\\\\steam.exe"]')
+          raise if !str.gsub!('g_proton.lib_dir + "/wine/x86_64-unix/wine-preloader", ', '')
 
           File.write(target, str)
           File.chmod(0700, target)

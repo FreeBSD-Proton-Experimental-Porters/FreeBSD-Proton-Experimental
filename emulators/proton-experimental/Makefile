@@ -41,7 +41,7 @@ USE_GCC=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ValveSoftware
 GH_PROJECT=	wine
-GH_TAGNAME=	9f853e2c41919a14d4862bfa8ca7e239c73f69d9
+GH_TAGNAME=	8bb4e7169707986385388fd5ec1f50b54dab1a2f
 
 USE_GL=		gl
 USE_GNOME=	glib20
@@ -54,8 +54,6 @@ NO_SHLIB_REQUIRES_GLOB= * # some of us never wanted that functionality in the fi
 
 SHEBANG_FILES=	tools/make_requests tools/winemaker/winemaker \
 		tools/winedump/function_grep.pl
-
-CONFLICTS_INSTALL=	wine-proton
 
 GNU_CONFIGURE=		yes
 GNU_CONFIGURE_PREFIX=	${PREFIX}/${PORTNAME}
@@ -97,7 +95,7 @@ CONFIGURE_ARGS=	--verbose \
 		--without-pcap \
 		--without-pcsclite \
 		--without-sane \
-		--without-udev \
+		--with-udev \
 		--without-unwind \
 		--without-usb \
 		--without-v4l2

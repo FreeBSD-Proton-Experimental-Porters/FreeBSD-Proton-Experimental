@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# <<Important>> Be sure to install 'Proton Experimental' or 'Proton Experimental [bleeding-edge]' tools in Linux Steam. 
+# <<Important>> Be sure to install 'Proton Experimental' or 'Proton Experimental [bleeding-edge]' tools in Linux Steam.
 
 # For Proton Experimental 11 Scripts and DXVK + VKD3D-Proton builds
 #ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/dxvk/i386-windows/* ~/WineGfx/dxvk-master/x32

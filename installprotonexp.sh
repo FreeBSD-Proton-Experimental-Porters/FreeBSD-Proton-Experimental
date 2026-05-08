@@ -12,3 +12,21 @@ if ! [ -e ~/.steam/steam/steamapps/common/Proton\ 11.0.bak ]; then
     mv ~/.steam/steam/steamapps/common/Proton\ 11.0 ~/.steam/steam/steamapps/common/Proton\ 11.0.bak
     ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/ ~/.steam/steam/steamapps/common/Proton\ 11.0
 fi
+
+# Symlinks for Proton Experimental 10 DXVK + VKD3D-Proton builds
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/dxvk/i386-windows/* ~/.steam/steam/steamapps/common/Proton\ 10.0/files/lib/wine/dxvk/i386-windows
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/dxvk/x86_64-windows/* ~/.steam/steam/steamapps/common/Proton\ 10.0/files/lib/wine/dxvk/x86_64-windows
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/vkd3d-proton/i386-windows/* ~/.steam/steam/steamapps/common/Proton\ 10.0/files/lib/wine/vkd3d-proton/i386-windows
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/vkd3d-proton/x86_64-windows/* ~/.steam/steam/steamapps/common/Proton\ 10.0/files/lib/wine/vkd3d-proton/x86_64-windows
+
+# Symlinks for Proton Experimental 9 DXVK + VKD3D-Proton builds
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/dxvk/i386-windows/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib/wine/dxvk
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/dxvk/x86_64-windows/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib64/wine/dxvk
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/vkd3d-proton/i386-windows/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib/wine/vkd3d-proton
+ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/vkd3d-proton/x86_64-windows/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib64/wine/vkd3d-proton
+
+# Legacy Symlinks for Proton Experimental 9 DXVK + VKD3D-Proton builds
+#ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/dxvk/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib/wine/dxvk
+#ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib64/wine/dxvk/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib64/wine/dxvk
+#ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib/wine/vkd3d-proton/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib/wine/vkd3d-proton
+#ln -sf ~/.steam/steam/steamapps/common/Proton\ -\ Experimental/files/lib64/wine/vkd3d-proton/* ~/.steam/steam/steamapps/common/Proton\ 9.0\ \(Beta\)/files/lib64/wine/vkd3d-proton

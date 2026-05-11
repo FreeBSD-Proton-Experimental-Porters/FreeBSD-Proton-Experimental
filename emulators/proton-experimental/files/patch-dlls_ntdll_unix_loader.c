@@ -12,9 +12,12 @@
 +        char* s = remove_tail(wineserver_path, "server");
 +        if (s != NULL) {
 +            if (machine == IMAGE_FILE_MACHINE_AMD64) {
-+                ret = malloc(strlen(s) + 3);
-+                strcpy(ret, s);
-+                strcat(ret, "64");
++                size_t s_len = strlen(s);
++                ret = malloc(s_len + 3);
++                memcpy(ret, s, s_len + 1);
++                ret[s_len] = '6';
++                ret[s_len + 1] = '4';
++                ret[s_len + 2] = '\0';
 +            } else {
 +                ret = s;
 +            }

@@ -1,9 +1,9 @@
 PORTNAME=	wine-proton-11
-DISTVERSION=	11.0-beta2
+DISTVERSION=	11.0-beta5
 CATEGORIES=	emulators
 
 MAINTAINER=	tmp386@live.com
-COMMENT=	Proton Experimental 11.0 port for FreeBSD
+COMMENT=	Proton 11.0 port for FreeBSD
 WWW=		https://github.com/ValveSoftware/wine
 
 LICENSE=	LGPL21 LGPL3
@@ -41,7 +41,7 @@ USE_GCC=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ValveSoftware
 GH_PROJECT=	wine
-GH_TAGNAME=	proton-wine-11.0-1-beta2
+GH_TAGNAME=	proton-wine-11.0-1-beta5
 
 USE_GL=		gl
 USE_GNOME=	glib20

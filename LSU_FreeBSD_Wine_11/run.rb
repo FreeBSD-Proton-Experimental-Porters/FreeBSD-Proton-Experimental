@@ -166,12 +166,14 @@ def set_up()
           paths = Dir.chdir(File.join(PROTON_DIR, 'files')) do
             Dir[
               '{lib*,lib/x86_64-linux-gnu}/libopenxr_loader.so.*',
-              'lib*/libsteam_api.so', # < Proton 10
+              'lib*/libsteam_api.so',
               'lib*/vkd3d',
               'lib*/wine/*/*steam*',
               'lib*/wine/*/vrclient*',
               'lib*/wine/*/wineopenxr.dll*',
               'lib*/wine/icu',
+              'lib*/wine/d7vk',
+              'lib*/wine/dxvk-sarek',
               'lib*/wine/dxvk',
               'lib*/wine/nvapi',
               'lib*/wine/vkd3d-proton',

@@ -48,6 +48,7 @@ wine-proton-11/lib/wine/i386-windows/adsldpc.dll
 wine-proton-11/lib/wine/i386-windows/advapi32.dll
 wine-proton-11/lib/wine/i386-windows/advpack.dll
 wine-proton-11/lib/wine/i386-windows/amd_ags_x64.dll
+wine-proton-11/lib/wine/i386-windows/amdxc64.dll
 wine-proton-11/lib/wine/i386-windows/amsi.dll
 wine-proton-11/lib/wine/i386-windows/amstream.dll
 wine-proton-11/lib/wine/i386-windows/apisetschema.dll
@@ -339,6 +340,7 @@ wine-proton-11/lib/wine/i386-windows/libadsiid.a
 wine-proton-11/lib/wine/i386-windows/libadvapi32.a
 wine-proton-11/lib/wine/i386-windows/libadvpack.a
 wine-proton-11/lib/wine/i386-windows/libamd_ags_x64.a
+wine-proton-11/lib/wine/i386-windows/libamdxc64.a
 wine-proton-11/lib/wine/i386-windows/libatl.a
 wine-proton-11/lib/wine/i386-windows/libatl100.a
 wine-proton-11/lib/wine/i386-windows/libatl110.a
@@ -569,6 +571,7 @@ wine-proton-11/lib/wine/i386-windows/libwininet.a
 wine-proton-11/lib/wine/i386-windows/libwinmm.a
 wine-proton-11/lib/wine/i386-windows/libwinnls32.a
 wine-proton-11/lib/wine/i386-windows/libwinspool.a
+wine-proton-11/lib/wine/i386-windows/libwinsqlite3.a
 wine-proton-11/lib/wine/i386-windows/libwintab32.a
 wine-proton-11/lib/wine/i386-windows/libwintrust.a
 wine-proton-11/lib/wine/i386-windows/libwintypes.a
@@ -1028,6 +1031,7 @@ wine-proton-11/lib/wine/i386-windows/winoldap.mod16
 wine-proton-11/lib/wine/i386-windows/winprint.dll
 wine-proton-11/lib/wine/i386-windows/winsock.dll16
 wine-proton-11/lib/wine/i386-windows/winspool.drv
+wine-proton-11/lib/wine/i386-windows/winsqlite3.dll
 wine-proton-11/lib/wine/i386-windows/winsta.dll
 wine-proton-11/lib/wine/i386-windows/wintab.dll16
 wine-proton-11/lib/wine/i386-windows/wintab32.dll
@@ -1053,7 +1057,6 @@ wine-proton-11/lib/wine/i386-windows/wmvdecod.dll
 wine-proton-11/lib/wine/i386-windows/wnaspi32.dll
 wine-proton-11/lib/wine/i386-windows/wofutil.dll
 wine-proton-11/lib/wine/i386-windows/wordpad.exe
-wine-proton-11/lib/wine/i386-windows/wow32.dll
 wine-proton-11/lib/wine/i386-windows/wpc.dll
 wine-proton-11/lib/wine/i386-windows/write.exe
 wine-proton-11/lib/wine/i386-windows/ws2_32.dll
@@ -1125,6 +1128,7 @@ wine-proton-11/lib/wine/%%WINEARCH%%-unix/libadsiid.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libadvapi32.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libadvpack.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libamd_ags_x64.a
+wine-proton-11/lib/wine/%%WINEARCH%%-unix/libamdxc64.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libatl.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libatl100.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libatl110.a
@@ -1353,6 +1357,7 @@ wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwininet.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwinmm.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwinnls32.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwinspool.a
+wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwinsqlite3.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwintab32.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwintrust.a
 wine-proton-11/lib/wine/%%WINEARCH%%-unix/libwintypes.a
@@ -1911,6 +1916,7 @@ wine-proton-11/lib/wine/%%WINEARCH%%-unix/ws2_32.so
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/libwinmm.a
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/libwinnls32.a
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/libwinspool.a
+%%WINE64%%wine-proton-11/lib/wine/x86_64-windows/libwinsqlite3.a
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/libwintab32.a
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/libwintrust.a
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/libwintypes.a
@@ -2330,6 +2336,7 @@ wine-proton-11/lib/wine/%%WINEARCH%%-unix/ws2_32.so
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/winnls32.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/winprint.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/winspool.drv
+%%WINE64%%wine-proton-11/lib/wine/x86_64-windows/winsqlite3.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/winsta.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/wintab32.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/wintrust.dll

@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'open3'
+
 DT_INIT       = 12
 DT_FINI       = 13
 DT_INIT_ARRAY = 25
@@ -52,7 +54,7 @@ end
 
 def patch_init(path, out_path)
 
-  headers = `readelf --headers --wide "#{path}"`
+  headers, = Open3.capture2('readelf', '--headers', '--wide', path)
 
   headers =~ /Class:\s+(ELF32|ELF64)/
   wordsize = $1 == 'ELF64' ? 8 : 4

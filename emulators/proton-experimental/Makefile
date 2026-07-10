@@ -1,10 +1,9 @@
 PORTNAME=	wine-proton-9
 DISTVERSION=	experimental-9.0-20250402
-PORTREVISION=	1
-PORTEPOCH=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
 
-MAINTAINER=	alexander.nogal@proton.me # and tmp386@live.com
+MAINTAINER=	tmp386@live.com
 COMMENT=	Proton experimental port for FreeBSD with a cool patch
 WWW=		https://github.com/ValveSoftware/wine
 
@@ -97,8 +96,8 @@ CONFIGURE_ARGS=	--verbose \
 
 CONFIGURE_ENV=	CPPBIN="false" CPPFLAGS="" FLEX="${LOCALBASE}/bin/flex" JXRLIB_CFLAGS="-I${LOCALBASE}/include/jxrlib"
 
-CFLAGS+=	-D__NR_futex="-1" -Werror=implicit-function-declaration
-CFLAGS_i386+=	-mpreferred-stack-boundary=4 -mstackrealign
+CFLAGS+=	-D__NR_futex="-1" -Werror=implicit-function-declaration -std=gnu17
+CFLAGS_i386+=	-mpreferred-stack-boundary=4 -mstackrealign -std=gnu17
 PIE_UNSAFE=	yes
 
 BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${_LLVM_VERSION} \

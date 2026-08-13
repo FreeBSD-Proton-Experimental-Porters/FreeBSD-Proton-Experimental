@@ -302,6 +302,7 @@ wine-proton-11/lib/wine/i386-windows/ieproxy.dll
 wine-proton-11/lib/wine/i386-windows/iertutil.dll
 wine-proton-11/lib/wine/i386-windows/iexplore.exe
 wine-proton-11/lib/wine/i386-windows/ifsmgr.vxd
+wine-proton-11/lib/wine/i386-windows/igd10iumd64.dll
 wine-proton-11/lib/wine/i386-windows/imaadp32.acm
 wine-proton-11/lib/wine/i386-windows/imagehlp.dll
 wine-proton-11/lib/wine/i386-windows/imm.dll16
@@ -1652,6 +1653,7 @@ wine-proton-11/lib/wine/%%WINEARCH%%-unix/ws2_32.so
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/ieproxy.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/iertutil.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/iexplore.exe
+%%WINE64%%wine-proton-11/lib/wine/x86_64-windows/igd10iumd64.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/imaadp32.acm
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/imagehlp.dll
 %%WINE64%%wine-proton-11/lib/wine/x86_64-windows/imm32.dll

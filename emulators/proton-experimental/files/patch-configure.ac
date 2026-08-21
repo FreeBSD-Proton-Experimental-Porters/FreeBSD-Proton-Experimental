@@ -1,0 +1,10 @@
+--- configure.ac.orig	2026-01-13 07:56:07.000000000 -0800
++++ configure.ac	2026-08-14 14:25:23.190157000 -0700
+@@ -568,7 +568,6 @@
+     WINE_TRY_PE_CFLAGS([-Wenum-enum-conversion],[:],WINE_TRY_PE_CFLAGS([-Wenum-conversion]))
+     WINE_TRY_PE_CFLAGS([-ffunction-sections])
+     WINE_TRY_PE_CFLAGS([-fasync-exceptions -DMIN_CLANG_VERSION=19], AS_VAR_APPEND([${wine_arch}_EXTRACFLAGS],[" -fasync-exceptions"]))
+-    WINE_TRY_PE_CFLAGS([-ffp-exception-behavior=maytrap])
+ 
+     dnl clang had broken -fms-hotpatch support before version 18 (https://github.com/llvm/llvm-project/pull/77245)
+     WINE_TRY_PE_CFLAGS([-fms-hotpatch -DMIN_CLANG_VERSION=18],

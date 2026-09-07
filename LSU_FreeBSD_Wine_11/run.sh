@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! -f "$HOME.i386-wine-pkg/usr/local/wine-proton-11/bin/wine" ]; then
+if [ ! -f "$HOME/.i386-wine-pkg/usr/local/wine-proton-11/bin/wine" ]; then
     export PROTON_USE_WOW64=1
 fi
 

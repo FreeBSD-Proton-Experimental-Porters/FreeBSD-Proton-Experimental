@@ -1,6 +1,6 @@
---- proton.orig	2026-05-26 16:19:20.234688000 -0700
-+++ proton	2026-05-26 18:48:32.030529000 -0700
-@@ -1149,10 +1149,17 @@
+--- proton.orig	2026-09-13 01:35:11.918124000 -0700
++++ proton	2026-09-13 01:50:27.245303000 -0700
+@@ -1171,10 +1171,17 @@
                      try_copy(g_proton.default_pfx_dir + "drive_c/windows/syswow64/" + f + ".dll", "drive_c/windows/syswow64",
                              prefix=self.prefix_dir, track_file=tracked_files, link_debug=True)
  
@@ -20,7 +20,7 @@
                              prefix=self.prefix_dir, track_file=tracked_files, link_debug=True)
                      g_session.dlloverrides[f] = "n"
  
-@@ -1165,6 +1172,21 @@
+@@ -1187,6 +1194,21 @@
                      try_copy(g_proton.arch_pe_dir("wine/vkd3d-proton", True) + f + ".dll", "drive_c/windows/syswow64",
                              prefix=self.prefix_dir, track_file=tracked_files, link_debug=True, optional=optional)
                      g_session.dlloverrides[f] = "n"
@@ -42,7 +42,7 @@
  
                  for f in icufiles:
                      dst = "drive_c/windows/system32/" + f + ".dll"
-@@ -1685,9 +1707,11 @@
+@@ -1760,9 +1782,11 @@
  
          if not self.check_environment("PROTON_USE_WINED3D", "wined3d"):
              self.check_environment("PROTON_USE_WINED3D11", "wined3d")
@@ -51,10 +51,10 @@
          self.check_environment("PROTON_NO_D3D11", "nod3d11")
          self.check_environment("PROTON_NO_D3D10", "nod3d10")
 +        self.check_environment("PROTON_DXVK_SAREK", "dxvksarek")
-         self.check_environment("PROTON_NO_ESYNC", "noesync")
          self.check_environment("PROTON_NO_FSYNC", "nofsync")
          self.check_environment("PROTON_FORCE_LARGE_ADDRESS_AWARE", "forcelgadd")
-@@ -1881,6 +1905,12 @@
+         self.check_environment("PROTON_OLD_GL_STRING", "oldglstr")
+@@ -1960,6 +1984,12 @@
              os.environ.get("SteamDeck", 0) == "1"):
              # Disable hidraw for Sony DualShock and DualSense controllers.
              self.env["PROTON_DISABLE_HIDRAW"] = "0x054C/0x05C4,0x054C/0x09CC,0x054C/0x0BA0,0x054C/0x0CE6,0x054C/0x0DF2"

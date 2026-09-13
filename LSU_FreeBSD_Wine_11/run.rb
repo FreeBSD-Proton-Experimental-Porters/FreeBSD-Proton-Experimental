@@ -172,6 +172,7 @@ def set_up()
               'lib*/wine/*/vrclient*',
               'lib*/wine/*/wineopenxr.dll*',
               'lib*/wine/icu',
+              'lib*/wine/igdext',
               'lib*/wine/d7vk',
               'lib*/wine/dxvk-sarek',
               'lib*/wine/dxvk',
@@ -179,6 +180,7 @@ def set_up()
               'lib*/wine/vkd3d-proton',
               'share/default_pfx',
               'share/fonts',
+              'share/openxr',
               'share/wine/fonts',
               'share/wine/wine.inf'
             ]

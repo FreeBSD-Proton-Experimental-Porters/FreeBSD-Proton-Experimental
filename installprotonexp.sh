@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# This script activates Proton Experimental 11 and 
+# This script activates Proton Experimental 11 and symlink DXVK and VKD3D-Proton for use outside of Steam.
 # <<Important>> Be sure to install 'Proton Experimental' or 'Proton Experimental [bleeding-edge]' tools in Linux Steam.
 
 STEAM_APPS="$HOME/.steam/steam/steamapps/common"

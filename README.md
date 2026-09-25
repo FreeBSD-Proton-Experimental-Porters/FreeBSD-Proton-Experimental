@@ -13,10 +13,10 @@ Adjust these variables to match your system and FreeBSD version.
 ```
 # FreeBSD version
 # Examples:
-#   14.4-RELEASE
-#   15.0-RELEASE (15-CURRENT, pkgbase or FreeBSD 14.4 required for i386)
+#   14.5-RELEASE
+#   15.0-RELEASE (15-CURRENT, pkgbase or FreeBSD 14.5 required for i386)
 export FREEBSD_VERSION="15.0-RELEASE"
-export FREEBSD_VERSION_I386="14.4-RELEASE"
+export FREEBSD_VERSION_I386="14.5-RELEASE"
 
 
 # amd64 jail name
@@ -153,7 +153,7 @@ poudriere bulk -j ${FREEBSD_JAIL_AMD64} \
 
 Install it:
 ```
-pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-11-e.11.0.20260910.pkg
+pkg install -y /usr/local/poudriere/data/packages/amd64-default/All/wine-proton-11-e.11.0.20260924.pkg
 ```
 If you want to install with poudriere pkg.conf check the bottom of this README.
 
@@ -162,7 +162,7 @@ If you want to install with poudriere pkg.conf check the bottom of this README.
 ## 32-bit (i386) build
 
 > Required for Proton.
-> Note: i386 packages are **removed in FreeBSD 15**, so building with FreeBSD 14.4 is recommended.
+> Note: i386 packages are **removed in FreeBSD 15**, so building with FreeBSD 14.5 is recommended.
 
 ### Create i386 jail
 
@@ -218,7 +218,7 @@ poudriere bulk -j ${FREEBSD_JAIL_I386_PKGB} \
 ```
 /usr/local/wine-proton/bin/pkg32.sh install -y \
   -r FreeBSD-ports \
-  /usr/local/poudriere/data/packages/i386-default/All/wine-proton-11-e.11.0.20260910.pkg
+  /usr/local/poudriere/data/packages/i386-default/All/wine-proton-11-e.11.0.20260924.pkg
 ```
 
 ## Using poudriere pkg.conf

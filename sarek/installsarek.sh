@@ -4,7 +4,7 @@
 # https://github.com/pythonlover02/DXVK-Sarek
 # https://github.com/WinterSnowfall/d7vk
 
-SAREK_VER="1.13.0"
+SAREK_VER="1.14.1"
 D7VK_VER="2.3"
 DIR=$(dirname "$(realpath "$0")")
 PROTON_EXP_PATH="$HOME/.steam/steam/steamapps/common/Proton - Experimental"

@@ -1,331 +1,287 @@
-From fc1462404fd151aa3bdec58efd5a6d784e34aa2b Mon Sep 17 00:00:00 2001
-From: Renkoto <norotera54@duck.com>
-Date: Sun, 1 Nov 2026 22:53:51 -0500
-Subject: [PATCH] files: Add mmap32 patches for new WoW64
+--- loader/Makefile.in.orig
++++ loader/Makefile.in
+@@ -14,7 +14,7 @@
+ 
+ wine_OBJS = main.o
+ wine_DEPS = $(WINELOADER_DEPENDS)
+-wine_LDFLAGS = $(WINELOADER_LDFLAGS) $(LDEXECFLAGS) $(PTHREAD_LIBS)
++wine_LDFLAGS = $(WINELOADER_LDFLAGS) -Wl,--export-dynamic $(LDEXECFLAGS) $(PTHREAD_LIBS)
+ 
+ wine_preloader_OBJS = preloader.o preloader_mac.o
+ wine_preloader_DEPS = $(WINELOADER_DEPENDS)
 
----
- .../files/patch-loader_Makefile.in            |  11 +
- .../files/patch-loader_main.c                 |  18 ++
- .../files/patch-loader_mmap32.h               | 219 ++++++++++++++++++
- .../files/patch-tools_wine_Makefile.in        |   9 +
- .../files/patch-tools_wine_wine.c             |  26 +++
- 5 files changed, 283 insertions(+)
- create mode 100644 patch-loader_Makefile.in
- create mode 100644 patch-loader_main.c
- create mode 100644 patch-loader_mmap32.h
- create mode 100644 patch-tools_wine_Makefile.in
- create mode 100644 patch-tools_wine_wine.c
+--- loader/main.c.orig
++++ loader/main.c
+@@ -39,6 +39,7 @@
+ #endif
+ 
+ #include "main.h"
++#include "mmap32.h"
+ 
+ #if defined(__APPLE__) && defined(__x86_64__) && !defined(HAVE_WINE_PRELOADER)
+ 
+@@ -192,6 +193,7 @@
+         (handle = try_dlopen( argv[0] )))
+     {
+         void (*init_func)(int, char **) = dlsym( handle, "__wine_main" );
++        mmap32_set_ntdll_handle( handle );
+         if (init_func) init_func( argc, argv );
+         fprintf( stderr, "wine: __wine_main function not found in ntdll.so\n" );
+         exit(1);
 
-diff --git a/patch-loader_Makefile.in b/patch-loader_Makefile.in
-new file mode 100644
-index 0000000..49e1510
 --- /dev/null
-+++ b/patch-loader_Makefile.in
-@@ -0,0 +1,11 @@
-+--- loader/Makefile.in.orig
-++++ loader/Makefile.in
-+@@ -14,7 +14,7 @@
-+ 
-+ wine_OBJS = main.o
-+ wine_DEPS = $(WINELOADER_DEPENDS)
-+-wine_LDFLAGS = $(WINELOADER_LDFLAGS) $(LDEXECFLAGS) $(PTHREAD_LIBS)
-++wine_LDFLAGS = $(WINELOADER_LDFLAGS) -Wl,--export-dynamic $(LDEXECFLAGS) $(PTHREAD_LIBS)
-+ 
-+ wine_preloader_OBJS = preloader.o preloader_mac.o
-+ wine_preloader_DEPS = $(WINELOADER_DEPENDS)
-diff --git a/patch-loader_main.c b/patch-loader_main.c
-new file mode 100644
-index 0000000..7c34c11
---- /dev/null
-+++ b/patch-loader_main.c
-@@ -0,0 +1,18 @@
-+--- loader/main.c.orig
-++++ loader/main.c
-+@@ -39,6 +39,7 @@
-+ #endif
-+ 
-+ #include "main.h"
-++#include "mmap32.h"
-+ 
-+ #if defined(__APPLE__) && defined(__x86_64__) && !defined(HAVE_WINE_PRELOADER)
-+ 
-+@@ -192,6 +193,7 @@
-+         (handle = try_dlopen( argv[0] )))
-+     {
-+         void (*init_func)(int, char **) = dlsym( handle, "__wine_main" );
-++        mmap32_set_ntdll_handle( handle );
-+         if (init_func) init_func( argc, argv );
-+         fprintf( stderr, "wine: __wine_main function not found in ntdll.so\n" );
-+         exit(1);
-diff --git a/patch-loader_mmap32.h b/patch-loader_mmap32.h
-new file mode 100644
-index 0000000..b84702c
---- /dev/null
-+++ b/patch-loader_mmap32.h
-@@ -0,0 +1,219 @@
-+--- /dev/null
-++++ loader/mmap32.h
-+@@ -0,0 +1,216 @@
-++/*
-++ * Low-address mmap() for 32-bit Vulkan device mappings on FreeBSD.
-++ *
-++ * FreeBSD's NVIDIA Vulkan driver (470.xx) exposes neither
-++ * VK_EXT_external_memory_host nor VK_EXT_map_memory_placed.  In new-WoW64
-++ * mode winevulkan then has no way to obtain a device mapping below 4GB and
-++ * rejects it with VK_ERROR_OUT_OF_HOST_MEMORY.
-++ *
-++ * The Wine loaders are the first objects in the global symbol scope, so
-++ * interposing mmap()/munmap() here also catches the calls made by dlopen()ed
-++ * Vulkan drivers.  For character device mappings without an address, reserve
-++ * space through Wine's own virtual memory allocator and place the driver
-++ * mapping there with MAP_FIXED.  In a 64-bit thread the allocator returns a
-++ * high address and the normal mmap() path is used instead.
-++ */
-++
-++#ifndef __WINE_LOADER_MMAP32_H
-++#define __WINE_LOADER_MMAP32_H
-++
-++#if defined(__FreeBSD__) && defined(__x86_64__)
-++
-++#include <dlfcn.h>
-++#include <stdio.h>
-++#include <stdlib.h>
-++#include <sys/mman.h>
-++#include <sys/stat.h>
-++#include <sys/types.h>
-++#include <unistd.h>
-++
-++extern char **environ;
-++
-++#define MMAP32_MEM_RESERVE    0x00002000
-++#define MMAP32_MEM_RELEASE    0x00008000
-++#define MMAP32_PAGE_READWRITE 0x04
-++#define MMAP32_PAGE_MASK      0xfffUL
-++#define MMAP32_MAX_ALLOCS     8192
-++
-++typedef long NTSTATUS;
-++typedef NTSTATUS (*mmap32_alloc_fn)( void *, void **, unsigned long, size_t *, unsigned int, unsigned int );
-++typedef NTSTATUS (*mmap32_free_fn)( void *, void **, size_t *, unsigned int );
-++
-++struct mmap32_alloc
-++{
-++    void *addr;
-++    size_t size;
-++};
-++
-++static void *mmap32_ntdll_handle;
-++static void *(*mmap32_real_mmap)( void *, size_t, int, int, int, off_t );
-++static int (*mmap32_real_munmap)( void *, size_t );
-++static mmap32_alloc_fn mmap32_nt_allocate;
-++static mmap32_free_fn mmap32_nt_free;
-++static struct mmap32_alloc mmap32_allocs[MMAP32_MAX_ALLOCS];
-++static volatile int mmap32_allocs_lock;
-++static int mmap32_nt_tried;
-++static int mmap32_debug = -1;
-++
-++static void mmap32_set_ntdll_handle( void *handle )
-++{
-++    mmap32_ntdll_handle = handle;
-++}
-++
-++static void mmap32_init_ntdll(void)
-++{
-++    if (mmap32_nt_tried || !mmap32_ntdll_handle) return;
-++    mmap32_nt_tried = 1;
-++    mmap32_nt_allocate = (mmap32_alloc_fn)dlsym( mmap32_ntdll_handle, "NtAllocateVirtualMemory" );
-++    mmap32_nt_free = (mmap32_free_fn)dlsym( mmap32_ntdll_handle, "NtFreeVirtualMemory" );
-++}
-++
-++static void mmap32_track_add( void *addr, size_t size )
-++{
-++    int i;
-++
-++    while (__sync_lock_test_and_set( &mmap32_allocs_lock, 1 )) {}
-++    for (i = 0; i < MMAP32_MAX_ALLOCS; i++)
-++    {
-++        if (!mmap32_allocs[i].addr)
-++        {
-++            mmap32_allocs[i].addr = addr;
-++            mmap32_allocs[i].size = size;
-++            break;
-++        }
-++    }
-++    __sync_lock_release( &mmap32_allocs_lock );
-++}
-++
-++static int mmap32_track_take( void *addr, size_t len, size_t *size )
-++{
-++    size_t rounded = (len + MMAP32_PAGE_MASK) & ~MMAP32_PAGE_MASK;
-++    int i, found = 0;
-++
-++    while (__sync_lock_test_and_set( &mmap32_allocs_lock, 1 )) {}
-++    for (i = 0; i < MMAP32_MAX_ALLOCS; i++)
-++    {
-++        if (mmap32_allocs[i].addr == addr && rounded >= mmap32_allocs[i].size)
-++        {
-++            *size = mmap32_allocs[i].size;
-++            mmap32_allocs[i].addr = NULL;
-++            mmap32_allocs[i].size = 0;
-++            found = 1;
-++            break;
-++        }
-++    }
-++    __sync_lock_release( &mmap32_allocs_lock );
-++    return found;
-++}
-++
-++static void *mmap32_low_map( size_t len, int prot, int flags, int fd, off_t off )
-++{
-++    size_t alloc_size = (len + MMAP32_PAGE_MASK) & ~MMAP32_PAGE_MASK;
-++    void *base = NULL;
-++    void *ret;
-++    NTSTATUS status;
-++
-++    if (!mmap32_nt_allocate) return MAP_FAILED;
-++
-++    status = mmap32_nt_allocate( (void *)-1, &base, 0, &alloc_size,
-++                                 MMAP32_MEM_RESERVE, MMAP32_PAGE_READWRITE );
-++    if (mmap32_debug)
-++        fprintf( stderr, "[mmap32] NtAllocateVirtualMemory -> %#lx base=%p size=%zu\n",
-++                 (unsigned long)status, base, alloc_size );
-++    if (status || !base) return MAP_FAILED;
-++
-++    if ((unsigned long)base >> 32)
-++    {
-++        size_t zero = 0;
-++        if (mmap32_debug) fprintf( stderr, "[mmap32] releasing high address %p\n", base );
-++        if (mmap32_nt_free) mmap32_nt_free( (void *)-1, &base, &zero, MMAP32_MEM_RELEASE );
-++        return MAP_FAILED;
-++    }
-++
-++    ret = mmap32_real_mmap( base, len, prot, flags | MAP_FIXED, fd, off );
-++    if (ret != base)
-++    {
-++        size_t zero = 0;
-++        if (mmap32_debug) fprintf( stderr, "[mmap32] MAP_FIXED at %p failed: %p\n", base, ret );
-++        if (ret != MAP_FAILED && mmap32_real_munmap) mmap32_real_munmap( ret, len );
-++        if (mmap32_nt_free) mmap32_nt_free( (void *)-1, &base, &zero, MMAP32_MEM_RELEASE );
-++        return MAP_FAILED;
-++    }
-++
-++    mmap32_track_add( base, alloc_size );
-++    return ret;
-++}
-++
-++__attribute__((visibility("default"))) void *mmap( void *addr, size_t len, int prot, int flags, int fd, off_t off )
-++{
-++    static __thread int in_progress;
-++    struct stat st;
-++    void *ret;
-++
-++    if (!mmap32_real_mmap)
-++    {
-++        mmap32_real_mmap = (void *(*)(void *, size_t, int, int, int, off_t))dlsym( RTLD_NEXT, "mmap" );
-++        mmap32_real_munmap = (int (*)(void *, size_t))dlsym( RTLD_NEXT, "munmap" );
-++        if (mmap32_debug < 0 && environ) mmap32_debug = getenv( "WINE_MMAP32_DEBUG" ) != NULL;
-++    }
-++    if (!mmap32_real_mmap) return MAP_FAILED;
-++    if (in_progress) return mmap32_real_mmap( addr, len, prot, flags, fd, off );
-++
-++    if (fd >= 0 && !addr && !(flags & MAP_FIXED) && len && !fstat( fd, &st ) && S_ISCHR( st.st_mode ))
-++    {
-++        mmap32_init_ntdll();
-++        in_progress = 1;
-++        ret = mmap32_low_map( len, prot, flags, fd, off );
-++        in_progress = 0;
-++        if (ret != MAP_FAILED)
-++        {
-++            if (mmap32_debug) fprintf( stderr, "[mmap32] fd=%d len=%zu -> %p\n", fd, len, ret );
-++            return ret;
-++        }
-++        return mmap32_real_mmap( NULL, len, prot, flags, fd, off );
-++    }
-++
-++    return mmap32_real_mmap( addr, len, prot, flags, fd, off );
-++}
-++
-++__attribute__((visibility("default"))) int munmap( void *addr, size_t len )
-++{
-++    void *base = addr;
-++    size_t size;
-++    int ret;
-++
-++    if (!mmap32_real_munmap)
-++    {
-++        mmap32_real_munmap = (int (*)(void *, size_t))dlsym( RTLD_NEXT, "munmap" );
-++        if (!mmap32_real_mmap)
-++            mmap32_real_mmap = (void *(*)(void *, size_t, int, int, int, off_t))dlsym( RTLD_NEXT, "mmap" );
-++        if (mmap32_debug < 0 && environ) mmap32_debug = getenv( "WINE_MMAP32_DEBUG" ) != NULL;
-++    }
-++    if (!mmap32_real_munmap) return -1;
-++
-++    ret = mmap32_real_munmap( addr, len );
-++    if (!ret)
-++    {
-++        mmap32_init_ntdll();
-++        if (mmap32_nt_free && mmap32_track_take( addr, len, &size ))
-++        {
-++            size_t zero = 0;
-++            NTSTATUS status = mmap32_nt_free( (void *)-1, &base, &zero, MMAP32_MEM_RELEASE );
-++            if (mmap32_debug)
-++                fprintf( stderr, "[mmap32] munmap %p len=%zu release=%zu status=%#lx\n",
-++                         addr, len, size, (unsigned long)status );
-++        }
-++    }
-++    return ret;
-++}
-++
-++#else  /* __FreeBSD__ && __x86_64__ */
-++
-++static void mmap32_set_ntdll_handle( void *handle ) { (void)handle; }
-++
-++#endif /* __FreeBSD__ && __x86_64__ */
-++
-++#endif /* __WINE_LOADER_MMAP32_H */
-diff --git a/patch-tools_wine_Makefile.in b/patch-tools_wine_Makefile.in
-new file mode 100644
-index 0000000..efccb7e
---- /dev/null
-+++ b/patch-tools_wine_Makefile.in
-@@ -0,0 +1,9 @@
-+--- tools/wine/Makefile.in.orig
-++++ tools/wine/Makefile.in
-+@@ -8,5 +8,6 @@
-+ 	wine.pl.UTF-8.man.in
-+ 
-+ wine_EXTRADEFS = -DBINDIR="\"${bindir}\"" -DLIBDIR="\"${libdir}\""
-++wine_LDFLAGS = -Wl,--export-dynamic
-+ 
-+ INSTALL_LIB = $(PROGRAMS)
-diff --git a/patch-tools_wine_wine.c b/patch-tools_wine_wine.c
-new file mode 100644
-index 0000000..6ffdb73
---- /dev/null
-+++ b/patch-tools_wine_wine.c
-@@ -0,0 +1,26 @@
-+--- tools/wine/wine.c.orig
-++++ tools/wine/wine.c
-+@@ -24,6 +24,8 @@
-+ 
-+ #include <dlfcn.h>
-+ 
-++#include "../../loader/mmap32.h"
-++
-+ static const char *bindir;
-+ static const char *libdir;
-+ 
-+@@ -55,10 +57,13 @@
-+ int main( int argc, char *argv[] )
-+ {
-+     void (*init_func)(int, char **);
-++    void *handle;
-+ 
-+     bindir = get_bindir( argv[0] );
-+     libdir = get_libdir( bindir );
-+-    init_func = dlsym( load_ntdll(), "__wine_main" );
-++    handle = load_ntdll();
-++    mmap32_set_ntdll_handle( handle );
-++    init_func = dlsym( handle, "__wine_main" );
-+     if (init_func) init_func( argc, argv );
-+ 
-+     fprintf( stderr, "wine: __wine_main function not found in ntdll.so\n" );
++++ loader/mmap32.h
+@@ -0,0 +1,216 @@
++/*
++ * Low-address mmap() for 32-bit Vulkan device mappings on FreeBSD.
++ *
++ * FreeBSD's NVIDIA Vulkan driver (470.xx) exposes neither
++ * VK_EXT_external_memory_host nor VK_EXT_map_memory_placed.  In new-WoW64
++ * mode winevulkan then has no way to obtain a device mapping below 4GB and
++ * rejects it with VK_ERROR_OUT_OF_HOST_MEMORY.
++ *
++ * The Wine loaders are the first objects in the global symbol scope, so
++ * interposing mmap()/munmap() here also catches the calls made by dlopen()ed
++ * Vulkan drivers.  For character device mappings without an address, reserve
++ * space through Wine's own virtual memory allocator and place the driver
++ * mapping there with MAP_FIXED.  In a 64-bit thread the allocator returns a
++ * high address and the normal mmap() path is used instead.
++ */
++
++#ifndef __WINE_LOADER_MMAP32_H
++#define __WINE_LOADER_MMAP32_H
++
++#if defined(__FreeBSD__) && defined(__x86_64__)
++
++#include <dlfcn.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <sys/mman.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <unistd.h>
++
++extern char **environ;
++
++#define MMAP32_MEM_RESERVE    0x00002000
++#define MMAP32_MEM_RELEASE    0x00008000
++#define MMAP32_PAGE_READWRITE 0x04
++#define MMAP32_PAGE_MASK      0xfffUL
++#define MMAP32_MAX_ALLOCS     8192
++
++typedef long NTSTATUS;
++typedef NTSTATUS (*mmap32_alloc_fn)( void *, void **, unsigned long, size_t *, unsigned int, unsigned int );
++typedef NTSTATUS (*mmap32_free_fn)( void *, void **, size_t *, unsigned int );
++
++struct mmap32_alloc
++{
++    void *addr;
++    size_t size;
++};
++
++static void *mmap32_ntdll_handle;
++static void *(*mmap32_real_mmap)( void *, size_t, int, int, int, off_t );
++static int (*mmap32_real_munmap)( void *, size_t );
++static mmap32_alloc_fn mmap32_nt_allocate;
++static mmap32_free_fn mmap32_nt_free;
++static struct mmap32_alloc mmap32_allocs[MMAP32_MAX_ALLOCS];
++static volatile int mmap32_allocs_lock;
++static int mmap32_nt_tried;
++static int mmap32_debug = -1;
++
++static void mmap32_set_ntdll_handle( void *handle )
++{
++    mmap32_ntdll_handle = handle;
++}
++
++static void mmap32_init_ntdll(void)
++{
++    if (mmap32_nt_tried || !mmap32_ntdll_handle) return;
++    mmap32_nt_tried = 1;
++    mmap32_nt_allocate = (mmap32_alloc_fn)dlsym( mmap32_ntdll_handle, "NtAllocateVirtualMemory" );
++    mmap32_nt_free = (mmap32_free_fn)dlsym( mmap32_ntdll_handle, "NtFreeVirtualMemory" );
++}
++
++static void mmap32_track_add( void *addr, size_t size )
++{
++    int i;
++
++    while (__sync_lock_test_and_set( &mmap32_allocs_lock, 1 )) {}
++    for (i = 0; i < MMAP32_MAX_ALLOCS; i++)
++    {
++        if (!mmap32_allocs[i].addr)
++        {
++            mmap32_allocs[i].addr = addr;
++            mmap32_allocs[i].size = size;
++            break;
++        }
++    }
++    __sync_lock_release( &mmap32_allocs_lock );
++}
++
++static int mmap32_track_take( void *addr, size_t len, size_t *size )
++{
++    size_t rounded = (len + MMAP32_PAGE_MASK) & ~MMAP32_PAGE_MASK;
++    int i, found = 0;
++
++    while (__sync_lock_test_and_set( &mmap32_allocs_lock, 1 )) {}
++    for (i = 0; i < MMAP32_MAX_ALLOCS; i++)
++    {
++        if (mmap32_allocs[i].addr == addr && rounded >= mmap32_allocs[i].size)
++        {
++            *size = mmap32_allocs[i].size;
++            mmap32_allocs[i].addr = NULL;
++            mmap32_allocs[i].size = 0;
++            found = 1;
++            break;
++        }
++    }
++    __sync_lock_release( &mmap32_allocs_lock );
++    return found;
++}
++
++static void *mmap32_low_map( size_t len, int prot, int flags, int fd, off_t off )
++{
++    size_t alloc_size = (len + MMAP32_PAGE_MASK) & ~MMAP32_PAGE_MASK;
++    void *base = NULL;
++    void *ret;
++    NTSTATUS status;
++
++    if (!mmap32_nt_allocate) return MAP_FAILED;
++
++    status = mmap32_nt_allocate( (void *)-1, &base, 0, &alloc_size,
++                                 MMAP32_MEM_RESERVE, MMAP32_PAGE_READWRITE );
++    if (mmap32_debug)
++        fprintf( stderr, "[mmap32] NtAllocateVirtualMemory -> %#lx base=%p size=%zu\n",
++                 (unsigned long)status, base, alloc_size );
++    if (status || !base) return MAP_FAILED;
++
++    if ((unsigned long)base >> 32)
++    {
++        size_t zero = 0;
++        if (mmap32_debug) fprintf( stderr, "[mmap32] releasing high address %p\n", base );
++        if (mmap32_nt_free) mmap32_nt_free( (void *)-1, &base, &zero, MMAP32_MEM_RELEASE );
++        return MAP_FAILED;
++    }
++
++    ret = mmap32_real_mmap( base, len, prot, flags | MAP_FIXED, fd, off );
++    if (ret != base)
++    {
++        size_t zero = 0;
++        if (mmap32_debug) fprintf( stderr, "[mmap32] MAP_FIXED at %p failed: %p\n", base, ret );
++        if (ret != MAP_FAILED && mmap32_real_munmap) mmap32_real_munmap( ret, len );
++        if (mmap32_nt_free) mmap32_nt_free( (void *)-1, &base, &zero, MMAP32_MEM_RELEASE );
++        return MAP_FAILED;
++    }
++
++    mmap32_track_add( base, alloc_size );
++    return ret;
++}
++
++__attribute__((visibility("default"))) void *mmap( void *addr, size_t len, int prot, int flags, int fd, off_t off )
++{
++    static __thread int in_progress;
++    struct stat st;
++    void *ret;
++
++    if (!mmap32_real_mmap)
++    {
++        mmap32_real_mmap = (void *(*)(void *, size_t, int, int, int, off_t))dlsym( RTLD_NEXT, "mmap" );
++        mmap32_real_munmap = (int (*)(void *, size_t))dlsym( RTLD_NEXT, "munmap" );
++        if (mmap32_debug < 0 && environ) mmap32_debug = getenv( "WINE_MMAP32_DEBUG" ) != NULL;
++    }
++    if (!mmap32_real_mmap) return MAP_FAILED;
++    if (in_progress) return mmap32_real_mmap( addr, len, prot, flags, fd, off );
++
++    if (fd >= 0 && !addr && !(flags & MAP_FIXED) && len && !fstat( fd, &st ) && S_ISCHR( st.st_mode ))
++    {
++        mmap32_init_ntdll();
++        in_progress = 1;
++        ret = mmap32_low_map( len, prot, flags, fd, off );
++        in_progress = 0;
++        if (ret != MAP_FAILED)
++        {
++            if (mmap32_debug) fprintf( stderr, "[mmap32] fd=%d len=%zu -> %p\n", fd, len, ret );
++            return ret;
++        }
++        return mmap32_real_mmap( NULL, len, prot, flags, fd, off );
++    }
++
++    return mmap32_real_mmap( addr, len, prot, flags, fd, off );
++}
++
++__attribute__((visibility("default"))) int munmap( void *addr, size_t len )
++{
++    void *base = addr;
++    size_t size;
++    int ret;
++
++    if (!mmap32_real_munmap)
++    {
++        mmap32_real_munmap = (int (*)(void *, size_t))dlsym( RTLD_NEXT, "munmap" );
++        if (!mmap32_real_mmap)
++            mmap32_real_mmap = (void *(*)(void *, size_t, int, int, int, off_t))dlsym( RTLD_NEXT, "mmap" );
++        if (mmap32_debug < 0 && environ) mmap32_debug = getenv( "WINE_MMAP32_DEBUG" ) != NULL;
++    }
++    if (!mmap32_real_munmap) return -1;
++
++    ret = mmap32_real_munmap( addr, len );
++    if (!ret)
++    {
++        mmap32_init_ntdll();
++        if (mmap32_nt_free && mmap32_track_take( addr, len, &size ))
++        {
++            size_t zero = 0;
++            NTSTATUS status = mmap32_nt_free( (void *)-1, &base, &zero, MMAP32_MEM_RELEASE );
++            if (mmap32_debug)
++                fprintf( stderr, "[mmap32] munmap %p len=%zu release=%zu status=%#lx\n",
++                         addr, len, size, (unsigned long)status );
++        }
++    }
++    return ret;
++}
++
++#else  /* __FreeBSD__ && __x86_64__ */
++
++static void mmap32_set_ntdll_handle( void *handle ) { (void)handle; }
++
++#endif /* __FreeBSD__ && __x86_64__ */
++
++#endif /* __WINE_LOADER_MMAP32_H */
+
+--- tools/wine/Makefile.in.orig
++++ tools/wine/Makefile.in
+@@ -8,5 +8,6 @@
+ 	wine.pl.UTF-8.man.in
+ 
+ wine_EXTRADEFS = -DBINDIR="\"${bindir}\"" -DLIBDIR="\"${libdir}\""
++wine_LDFLAGS = -Wl,--export-dynamic
+ 
+ INSTALL_LIB = $(PROGRAMS)
+
+--- tools/wine/wine.c.orig
++++ tools/wine/wine.c
+@@ -24,6 +24,8 @@
+ 
+ #include <dlfcn.h>
+ 
++#include "../../loader/mmap32.h"
++
+ static const char *bindir;
+ static const char *libdir;
+ 
+@@ -55,10 +57,13 @@
+ int main( int argc, char *argv[] )
+ {
+     void (*init_func)(int, char **);
++    void *handle;
+ 
+     bindir = get_bindir( argv[0] );
+     libdir = get_libdir( bindir );
+-    init_func = dlsym( load_ntdll(), "__wine_main" );
++    handle = load_ntdll();
++    mmap32_set_ntdll_handle( handle );
++    init_func = dlsym( handle, "__wine_main" );
+     if (init_func) init_func( argc, argv );
+ 
+     fprintf( stderr, "wine: __wine_main function not found in ntdll.so\n" );

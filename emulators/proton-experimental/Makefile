@@ -1,5 +1,5 @@
 PORTNAME=	wine-proton-11
-DISTVERSION=	experimental-11.0-20261105
+DISTVERSION=	experimental-11.0-20261112
 CATEGORIES=	emulators
 
 MAINTAINER=	tmp386@live.com
@@ -43,7 +43,7 @@ USE_GCC=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ValveSoftware
 GH_PROJECT=	wine
-GH_TAGNAME=	e8ca5806eec488f5916e83d655ffc5349b6b1702
+GH_TAGNAME=	5b557605b4e51f0853ec8e0e4f0eb536c669fae3
 
 USE_GL=		gl
 USE_GNOME=	glib20

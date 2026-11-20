@@ -116,14 +116,16 @@ PIE_UNSAFE=	yes
 BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${LLVM_VERSION} \
 		lld-link=${LOCALBASE}/bin/lld-link${LLVM_VERSION}
 
-OPTIONS_DEFINE+=	MMAP32 PULSEAUDIO
+OPTIONS_DEFINE+=	PULSEAUDIO
 OPTIONS_DEFAULT=	PULSEAUDIO
 OPTIONS_SUB=		yes
 
-MMAP32_DESC=		Legacy 470.x Nvidia driver support for the new WoW64
 PULSEAUDIO_DESC=	Build winepulse.drv
 
-MMAP32_EXTRA_PATCHES=		${FILESDIR}/extra-patch-wow64-legacy_drivers.patch
+# Always applied: low-address device mappings for the new WoW64 (legacy 470.x
+# Nvidia driver support).  They are off by default; WINE_MMAP32=1 enables them
+# at runtime, so a single build keeps Wine's default behaviour.
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-wow64-legacy_drivers.patch
 PULSEAUDIO_BUILD_DEPENDS=	${LOCALBASE}/include/pulse/pulseaudio.h:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ON=	--with-pulse
 PULSEAUDIO_CONFIGURE_OFF=	--without-pulse

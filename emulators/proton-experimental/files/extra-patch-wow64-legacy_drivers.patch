@@ -31,7 +31,7 @@
 
 --- /dev/null
 +++ loader/mmap32.h
-@@ -0,0 +1,216 @@
+@@ -0,0 +1,238 @@
 +/*
 + * Low-address mmap() for 32-bit Vulkan device mappings on FreeBSD.
 + *
@@ -44,8 +44,13 @@
 + * interposing mmap()/munmap() here also catches the calls made by dlopen()ed
 + * Vulkan drivers.  For character device mappings without an address, reserve
 + * space through Wine's own virtual memory allocator and place the driver
-+ * mapping there with MAP_FIXED.  In a 64-bit thread the allocator returns a
-+ * high address and the normal mmap() path is used instead.
++ * mapping there with MAP_FIXED.  If the allocator does not return a usable
++ * low address, the reservation is released and the normal mmap() path is
++ * used instead.
++ *
++ * The interposition is disabled by default, so Wine keeps its normal
++ * behaviour.  Set WINE_MMAP32=1 (or "yes", "on", "true") at runtime to
++ * enable it.  WINE_MMAP32_DEBUG=1 enables the debug log.
 + */
 +
 +#ifndef __WINE_LOADER_MMAP32_H
@@ -87,11 +92,25 @@
 +static struct mmap32_alloc mmap32_allocs[MMAP32_MAX_ALLOCS];
 +static volatile int mmap32_allocs_lock;
 +static int mmap32_nt_tried;
++static int mmap32_enabled = -1;
 +static int mmap32_debug = -1;
 +
 +static void mmap32_set_ntdll_handle( void *handle )
 +{
 +    mmap32_ntdll_handle = handle;
++}
++
++static void mmap32_init_config(void)
++{
++    const char *env;
++
++    if (mmap32_enabled >= 0) return;
++    env = environ ? getenv( "WINE_MMAP32" ) : NULL;
++    mmap32_enabled = env && (env[0] == '1' || env[0] == 'y' || env[0] == 'Y' ||
++                             env[0] == 't' || env[0] == 'T' ||
++                             ((env[0] == 'o' || env[0] == 'O') &&
++                              (env[1] == 'n' || env[1] == 'N')));
++    if (mmap32_debug < 0 && environ) mmap32_debug = getenv( "WINE_MMAP32_DEBUG" ) != NULL;
 +}
 +
 +static void mmap32_init_ntdll(void)
@@ -188,9 +207,11 @@
 +    {
 +        mmap32_real_mmap = (void *(*)(void *, size_t, int, int, int, off_t))dlsym( RTLD_NEXT, "mmap" );
 +        mmap32_real_munmap = (int (*)(void *, size_t))dlsym( RTLD_NEXT, "munmap" );
-+        if (mmap32_debug < 0 && environ) mmap32_debug = getenv( "WINE_MMAP32_DEBUG" ) != NULL;
 +    }
 +    if (!mmap32_real_mmap) return MAP_FAILED;
++
++    mmap32_init_config();
++    if (!mmap32_enabled) return mmap32_real_mmap( addr, len, prot, flags, fd, off );
 +    if (in_progress) return mmap32_real_mmap( addr, len, prot, flags, fd, off );
 +
 +    if (fd >= 0 && !addr && !(flags & MAP_FIXED) && len && !fstat( fd, &st ) && S_ISCHR( st.st_mode ))
@@ -221,12 +242,13 @@
 +        mmap32_real_munmap = (int (*)(void *, size_t))dlsym( RTLD_NEXT, "munmap" );
 +        if (!mmap32_real_mmap)
 +            mmap32_real_mmap = (void *(*)(void *, size_t, int, int, int, off_t))dlsym( RTLD_NEXT, "mmap" );
-+        if (mmap32_debug < 0 && environ) mmap32_debug = getenv( "WINE_MMAP32_DEBUG" ) != NULL;
 +    }
 +    if (!mmap32_real_munmap) return -1;
 +
++    mmap32_init_config();
++
 +    ret = mmap32_real_munmap( addr, len );
-+    if (!ret)
++    if (!ret && mmap32_enabled)
 +    {
 +        mmap32_init_ntdll();
 +        if (mmap32_nt_free && mmap32_track_take( addr, len, &size ))

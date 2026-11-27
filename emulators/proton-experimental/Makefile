@@ -1,5 +1,5 @@
 PORTNAME=	wine-proton-11
-DISTVERSION=	experimental-11.0-20261112
+DISTVERSION=	experimental-11.0-20261123
 CATEGORIES=	emulators
 
 MAINTAINER=	tmp386@live.com
@@ -15,6 +15,10 @@ ONLY_FOR_ARCHS=	amd64 i386
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		${LOCALBASE}/ffmpeg4/include/libavformat/avformat.h:multimedia/ffmpeg4 \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+
+.if exists(/usr/include/dev/ntsync/ntsync.h)
+HAS_NTSYNC=	yes
+.endif
 
 # amd_ags_x64.so
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm \
@@ -38,12 +42,13 @@ USES=		autoreconf bison desktop-file-utils gl gmake gnome gstreamer \
 		llvm:min=17,build,noexport localbase perl5 pkgconfig \
 		python:build sdl shebangfix tar:xz xorg
 
+USE_CSTD=	gnu11
 USE_GCC=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ValveSoftware
 GH_PROJECT=	wine
-GH_TAGNAME=	5b557605b4e51f0853ec8e0e4f0eb536c669fae3
+GH_TAGNAME=	4c5e47d409a8012da3c678f09650acef4a7a27a1
 
 USE_GL=		gl
 USE_GNOME=	glib20
@@ -110,11 +115,26 @@ CONFIGURE_ENV=	CPPBIN="false" \
 CFLAGS+=	-D__NR_futex="-1" -Werror=implicit-function-declaration \
 		-Wno-int-conversion
 CFLAGS_i386+=	-mpreferred-stack-boundary=4 -mstackrealign
+
+.if defined(HAS_NTSYNC)
+CFLAGS+=	-I${WRKDIR}/include/linuxapi
+.endif
+
 NO_SHLIB_REQUIRES_GLOB=	* # some of us never wanted that functionality in the first place
 PIE_UNSAFE=	yes
 
 BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${LLVM_VERSION} \
 		lld-link=${LOCALBASE}/bin/lld-link${LLVM_VERSION}
+
+# Always applied: low-address device mappings for the new WoW64 (legacy 470.x
+# Nvidia driver support).  They are off by default; WINE_MMAP32=1 enables them
+# at runtime, so a single build keeps Wine's default behaviour.
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-wow64-legacy_drivers.patch
+
+.if defined(HAS_NTSYNC)
+BUILD_DEPENDS+=	${LOCALBASE}/include/linuxapi/linux/ntsync.h:devel/linuxapi
+PKGMESSAGE+=	${FILESDIR}/pkg-message.ntsync
+.endif
 
 OPTIONS_DEFINE+=	PULSEAUDIO
 OPTIONS_DEFAULT=	PULSEAUDIO
@@ -122,10 +142,6 @@ OPTIONS_SUB=		yes
 
 PULSEAUDIO_DESC=	Build winepulse.drv
 
-# Always applied: low-address device mappings for the new WoW64 (legacy 470.x
-# Nvidia driver support).  They are off by default; WINE_MMAP32=1 enables them
-# at runtime, so a single build keeps Wine's default behaviour.
-EXTRA_PATCHES+=		${FILESDIR}/extra-patch-wow64-legacy_drivers.patch
 PULSEAUDIO_BUILD_DEPENDS=	${LOCALBASE}/include/pulse/pulseaudio.h:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ON=	--with-pulse
 PULSEAUDIO_CONFIGURE_OFF=	--without-pulse
@@ -145,6 +161,13 @@ PLIST_SUB+=		WINE32="" \
 .endif
 
 pre-configure:
+.if defined(HAS_NTSYNC)
+	@${MKDIR} ${WRKDIR}/include/linuxapi/linux
+	@${CP} ${LOCALBASE}/include/linuxapi/linux/ntsync.h ${WRKDIR}/include/linuxapi/linux/
+	@${CP} ${LOCALBASE}/include/linuxapi/linux/types.h ${WRKDIR}/include/linuxapi/linux/
+	@${CP} ${LOCALBASE}/include/linuxapi/linux/stddef.h ${WRKDIR}/include/linuxapi/linux/
+.endif
+
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} dlls/winevulkan/make_vulkan --xml vk.xml --video-xml video.xml
 	cd ${WRKSRC} && ${PERL5} tools/make_specfiles
 
